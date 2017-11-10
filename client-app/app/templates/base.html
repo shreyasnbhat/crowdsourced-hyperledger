@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <title>Consumer Home Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Bitter|Indie+Flower|Nunito|Raleway|Spectral+SC|Vollkorn+SC"
+          rel="stylesheet">
+    <script src="{{ url_for('static',filename = 'js/form.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+<nav class="nav-extended">
+    <div class="nav-wrapper light-blue darken-3">
+        <a href="#" class="brand-logo left-margin">Survey Client</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            {% block navItems %}
+            {% endblock %}
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    {% block body %}
+    {% endblock %}
+</div>
+</body>
+</html>

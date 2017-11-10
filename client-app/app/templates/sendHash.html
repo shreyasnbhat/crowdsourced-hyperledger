@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "formBase.html" %}
+<head>
+    {% block head %}
+        {{ super() }}
+    {% endblock %}
+</head>
+<body>
+{% block formNav %}
+    {{ super() }}
+{% endblock %}
+{% block body %}
+    {% block subBody %}
+        {% if randomMessage %}
+            <div class="row">
+                {% if authenticated %}
+                    <div class="card-panel green darken-1 block-style">
+                        <h5 class="white-text center form-header">Organization Server sent a message!</h5>
+                        <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
+                    </div>
+                {% else %}
+                    <div class="card-panel red darken-1 block-style">
+                        <h5 class="white-text center form-header">Organization Server sent a message!</h5>
+                        <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
+                        <p class="white-text center">Unauthenticated</p>
+                    </div>
+                {% endif %}
+                <form action="{{ url_for('generateForm') }}" method="POST">
+                    <div class="row block-style">
+                        <div class="input-field col s12">
+                            <input id="ip" type="hidden" class="validate" name="encryptedRandomMessage"
+                                   value="{{ encryptedRandomMessage }}">
+                            <label for="ip" class="active">Hash</label>
+                            <input id="ip" type="text" class="validate" name="display-token"
+                                   value="{{ encryptedRandomMessage }}" disabled>
+                        </div>
+                    </div>
+                    <input type="submit" class="waves-effect waves-light btn light-blue darken-4"
+                           value="Authenticate">
+                </form>
+            </div>
+        {% endif %}
+    {% endblock %}
+    {% block instructions %}
+        {{ super() }}
+    {% endblock %}
+{% endblock %}
+</body>
+</html>

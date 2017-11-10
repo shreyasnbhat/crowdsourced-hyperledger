@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "formBase.html" %}
+<head>
+    {% block head %}
+        {{ super() }}
+    {% endblock %}
+</head>
+<body>
+{% block formNav %}
+    {{ super() }}
+{% endblock %}
+{% block body %}
+    {% block subBody %}
+        <div class="card-panel margin-top">
+            <form action="{{ url_for('sendHash') }}" method="POST">
+                <div class="row block-style">
+                    <div class="input-field col s12">
+                        <input id="ip" type="text" class="validate" name="request-ip">
+                        <label for="ip" class="active">Organization IP</label>
+                    </div>
+                </div>
+                <input type="submit" class="waves-effect waves-light btn light-blue darken-4" value="Request Form">
+            </form>
+        </div>
+    {% endblock %}
+    {% block instructions %}
+        {{ super() }}
+    {% endblock %}
+{% endblock %}
+</body>
+</html>

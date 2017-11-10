@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "formBase.html" %}
+<head>
+    {% block head %}
+        {{ super() }}
+    {% endblock %}
+</head>
+<body>
+<nav class="nav-extended">
+    <div class="nav-wrapper light-blue darken-3">
+        <a href="#" class="brand-logo left-margin">Survey Client</a>
+        {% block navItems %}
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li class="active"><a href="{{ url_for('requestForm') }}">Form Request</a></li>
+            <li><a href="{{ url_for('viewAllTokens') }}">Tokens</a></li>
+        {% endblock %}
+        </ul>
+    </div>
+</nav>
+{% block body %}
+    {% block subBody %}
+        {% if randomMessage %}
+            <div class="row">
+                {% if authenticated %}
+                    <div class="card-panel green darken-1 block-style">
+                        <h5 class="white-text center form-header">Organization Server sent a message!</h5>
+                        <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
+                    </div>
+                {% else %}
+                    <div class="card-panel red darken-1 block-style">
+                        <h5 class="white-text center form-header">Organization Server sent a message!</h5>
+                        <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
+                        <p class="white-text center">Unauthenticated</p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if response %}
+            <div class="card">
+                <div class="row light-blue darken-1">
+                    <h4 class="form-header col s12 white-text center">Generated Form</h4>
+                </div>
+                <form action="{{ url_for('publishBlockOnFabric',surveyID=surveyID) }}" class="block-style"
+                      method="POST">
+                    {% for question in response['form'] %}
+                        <div class="row">
+                            <div class="block-style">
+                                <h5 class="question-font">{{ response['form'][question]['question'] }}</h5>
+                                <label>Options</label>
+                                <select class="browser-default" name="{{ question }}">
+                                    {% for allowedAnswers in response['form'][question]['allowedAnswers'] %}
+                                        <option value="{{ response['form'][question]['allowedAnswers'][allowedAnswers] }}">{{ response['form'][question]['allowedAnswers'][allowedAnswers] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <br>
+                    <input class="waves-effect waves-light btn light-blue darken-4" type="submit" value="Submit Form">
+                </form>
+            </div>
+        {% endif %}
+    {% endblock %}
+    {% block instructions %}
+        {{ super() }}
+    {% endblock %}
+{% endblock %}
+</body>
+</html>
