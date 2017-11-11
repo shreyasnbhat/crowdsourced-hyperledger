@@ -5,7 +5,7 @@ from client.app import *
 
 pubKey = 'pubkey'
 consumerID = "c2"
-consumerAccountNumber = "ca2"
+consumerAccountID = "ca2"
 clientTokens = {}
 clientForms = {}
 
@@ -84,7 +84,7 @@ def publishBlockOnFabric(surveyID):
     if request.method == 'POST':
         filledForm = json.dumps(request.form)
         # TODO: Replace "valid" with filledForm
-        postSubmitSurvey("valid", clientTokens[surveyID], consumerID)
+        postSubmitSurvey("valid", clientTokens[surveyID], consumerAccountID)
         return redirect(url_for('requestForm'))
 
 
@@ -99,8 +99,7 @@ def viewAllTokens():
             clientTokensData[token] = {'surveyToken': clientTokens[token],
                                        'on-chain': getAssignSurveyToken(clientTokens[token])}
         return render_template('tokens.html',
-<<<<<<< HEAD
-                               clientTokens=clientTokensData)
+                               clientTokens=clientTokensData, claimed=tokenClaimStatus)
 
 
 @app.route('/display/status')
@@ -109,7 +108,3 @@ def serve_display_status():
     display.append(getConsumer("c2"))
     display.append(getConsumerAccount("ca2"))
     return render_template('display_blocks.html', display=display)
-=======
-                               clientTokens=clientTokensData,
-                               claimed=tokenClaimStatus)
->>>>>>> 24092ce1fd6105c190d06b577cf3a8c3a72fb982
