@@ -92,10 +92,14 @@ def publishBlockOnFabric(surveyID):
 def viewAllTokens():
     if request.method == 'GET':
         clientTokensData = {}
+        tokenClaimStatus = {}
         for token in clientTokens:
+            tokenClaimStatus[clientTokens[token]] = getAssignSurveyToken(clientTokens[token])['claimed']
+            print(tokenClaimStatus)
             clientTokensData[token] = {'surveyToken': clientTokens[token],
                                        'on-chain': getAssignSurveyToken(clientTokens[token])}
         return render_template('tokens.html',
+<<<<<<< HEAD
                                clientTokens=clientTokensData)
 
 
@@ -105,3 +109,7 @@ def serve_display_status():
     display.append(getConsumer("c2"))
     display.append(getConsumerAccount("ca2"))
     return render_template('display_blocks.html', display=display)
+=======
+                               clientTokens=clientTokensData,
+                               claimed=tokenClaimStatus)
+>>>>>>> 24092ce1fd6105c190d06b577cf3a8c3a72fb982
