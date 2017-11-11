@@ -83,9 +83,8 @@ def generateForm():
 def publishBlockOnFabric(surveyID):
     if request.method == 'POST':
         filledForm = json.dumps(request.form)
-
-        postSubmitSurvey(filledForm, clientTokens[surveyID], consumerID)
-
+        # TODO: Replace "valid" with filledForm
+        postSubmitSurvey("valid", clientTokens[surveyID], consumerID)
         return redirect(url_for('requestForm'))
 
 
@@ -98,3 +97,11 @@ def viewAllTokens():
                                        'on-chain': getAssignSurveyToken(clientTokens[token])}
         return render_template('tokens.html',
                                clientTokens=clientTokensData)
+
+
+@app.route('/display/status')
+def serve_display_status():
+    display = []
+    display.append(getConsumer("c2"))
+    display.append(getConsumerAccount("ca2"))
+    return render_template('display_blocks.html', display=display)

@@ -5,6 +5,8 @@ from rest.api import *
 from organization.app import *
 from datetime import timedelta
 
+organizationID = "o2"
+organizationAccountID = "oa2"
 currentRandomMessages = []
 pubKeyList = ['pubkey']
 pubKeyClaimedToken = []
@@ -121,10 +123,13 @@ def serve_form_generate():
         data = request.form
         if not data:
             status = {'error': 'no form'}
-        if not 'form' in data or not 'surveyID' in data or not 'payOut' in data:
+        if not 'form' in data or not 'surveyID' in data or not 'surveyFunds' in data or not 'payOut' in data:
             status = {'error': 'data missing in form'}
         else:
-            status = publishSurvey(data['form'], data['surveyID'], data['payOut'])
+            status = []
+            status.append(publishSurvey(data['form'], data['surveyID'], data['payOut']))
+            status.append(postPublishSurvey(data['surveyID'], data['surveyFunds'], organizationAccountID))
+            status.append(getSurvey(data['surveyID']))
         return render_template('display.html', display=status)
 
 
@@ -143,6 +148,14 @@ def serve_form_status():
 def serve_display_survey():
     display = getSurvey('')
     return render_template('display_surveys.html', display=display)
+
+@app.route('/display/status')
+def serve_display_status():
+    display = []
+    display.append(getOrganization("o2"))
+    display.append(getOrganizationAccount("oa2"))
+    display.append(getSurvey(surveyID))
+    return render_template('display_blocks.html', display=display)
 
 
 @app.route('/display/assignSurveyToken')

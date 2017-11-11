@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+<head>
+    {% block head %}
+        {{ super() }}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    {% for item in display %}
+        <div class="row card-panel pink lighten-2 white-text">
+            {{ item }}
+        </div>
+    {% endfor %}
+{% endblock %}
+</body>
+</html>
+
+</body>
+</html>

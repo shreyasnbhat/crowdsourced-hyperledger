@@ -10,8 +10,8 @@
 <body>
 {% block body %}
     <div class="row card-panel white pink lighten-2">
-        <div>
-            <form method="POST" action="{{ url_for('serve_form_generate') }}" class="white-text">
+        <form method="POST" action="{{ url_for('serve_form_generate') }}" class="white-text">
+            <div>
                 <label for="form" class="white-text">Form</label>
                 <textarea class="materialize-textarea pink lighten-3" name="form" rows="10"
                           cols="30">{{ form }}</textarea>
@@ -19,9 +19,13 @@
                 <input name="surveyID" value="surveyID-ABCDE">
                 <label for="payOut" class="white-text">Pay Out</label>
                 <input name="payOut" value="10">
-                <center><input type="submit" class="btn waves-effect cyan darken-2" value="Generate Form"></center>
-            </form>
-        </div>
+            </div>
+            <div>
+                <label for="surveyFunds" class="white-text">Survey Funds</label>
+                <input name="surveyFunds" value="1030">
+            </div>
+            <center><input type="submit" class="btn waves-effect cyan darken-2" value="Generate Form"></center>
+        </form>
     </div>
 
     <div class="row">
