@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 {% extends "base.html" %}
 <head>
@@ -22,13 +22,21 @@
 {% endblock %}
 {% block body %}
     {% if clientTokens %}
-            {% for token in clientTokens %}
+        {% for token in clientTokens %}
+            <form action="{{ url_for('generateForm') }}" method="POST">
                 <div class="row card-panel green darken-1">
                     <div class="col s12">
-                        <h5 class="white-text center">{{token}}: {{clientTokens[token]}}</h5>
+                        <input value="{{ token }}" type="text" class="validate white-text form-header" name="surveyID">
+                        <input value="true" type="hidden" name="from-token">
+                        <input value="{{ clientTokens[token]['surveyToken'] }}" type="text" name="surveyToken"
+                               class="validate white-text form-header">
+                        <input type="submit" class="waves-effect waves-light btn light-blue darken-4"
+                               value="Use Token">
+
                     </div>
                 </div>
-            {% endfor %}
+            </form>
+        {% endfor %}
     {% endif %}
 {% endblock %}
 </body>

@@ -1,7 +1,10 @@
 import requests
 from datetime import datetime
+import os,sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from rest import REST_API_BASE_ENDPOINT
 
-url = "http://localhost:3000/api/"
+url = "http://" + REST_API_BASE_ENDPOINT + ":3000/api/"
 headers = {'content-type': 'application/json'}
 
 

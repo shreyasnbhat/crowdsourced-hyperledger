@@ -7,6 +7,7 @@ pubKey = 'pubkey'
 consumerID = "c2"
 consumerAccountNumber = "ca2"
 clientTokens = {}
+clientForms = {}
 
 
 def encrypt(randomMessage):
@@ -30,7 +31,7 @@ def sendHash():
         request_ip = request.form['request-ip']
         session['request-ip'] = request_ip
 
-        url = "http://" + request_ip + ":"+ORGANIZATION_PORT+"/form"
+        url = "http://" + request_ip + ":" + ORGANIZATION_PORT + "/form"
         randomMessage = requests.get(url).json()['randomMessage']
         encryptedRandomMessage = encrypt(randomMessage)
 
@@ -46,24 +47,34 @@ def sendHash():
 @app.route('/generateForm', methods=['GET', 'POST'])
 def generateForm():
     if request.method == 'POST':
-        print(session['request-ip'])
-
-        url = "http://" + session['request-ip'] + ":" + ORGANIZATION_PORT+"/form"
-        form = requests.post(url, json={'encryptedRandomMessage': request.form['encryptedRandomMessage'],
-                                        'pubKey': pubKey, 'consumerID': consumerID}).json()
-
-        if "error" not in dict(form).keys():
-            clientTokens[form['surveyID']] = form['surveyToken']
-            print(clientTokens)
+        if 'from-token' in request.form and request.form['from-token']:
+            surveyID = request.form['surveyID']
+            surveyToken = request.form['surveyToken']
+            form = clientForms[surveyToken]
             return render_template('form.html',
                                    randomMessage='Authenticated',
                                    response=form,
-                                   surveyID=form['surveyID'],
+                                   surveyID=surveyID,
                                    authenticated=True)
         else:
-            return render_template('form.html',
-                                   randomMessage=form['error'],
-                                   authenticated=False)
+            url = "http://" + session['request-ip'] + ":" + ORGANIZATION_PORT + "/form"
+            form = requests.post(url, json={'encryptedRandomMessage': request.form['encryptedRandomMessage'],
+                                            'pubKey': pubKey, 'consumerID': consumerID}).json()
+
+            if "error" not in dict(form).keys():
+                clientTokens[form['surveyID']] = form['surveyToken']
+                clientForms[form['surveyToken']] = form
+
+                print(clientTokens)
+                return render_template('form.html',
+                                       randomMessage='Authenticated',
+                                       response=form,
+                                       surveyID=form['surveyID'],
+                                       authenticated=True)
+            else:
+                return render_template('form.html',
+                                       randomMessage=form['error'],
+                                       authenticated=False)
     else:
         return redirect(url_for('requestForm'))
 
@@ -73,28 +84,17 @@ def publishBlockOnFabric(surveyID):
     if request.method == 'POST':
         filledForm = json.dumps(request.form)
 
-        block_data = {
-            "$class": "org.acme.survey.SubmitSurvey",
-            "filledForm": filledForm,
-            "consumerAccount": consumerAccountNumber,
-            "survey": surveyID,
-            "transactionId": "",
-            "timestamp": "2017-11-09T18:45:48.819Z"
-        }
+        postSubmitSurvey(filledForm, surveyToken, consumerID)
 
-        print(block_data)
-
-        blockchain_endpoint = "http://192.168.43.177:3000/api/SubmitSurvey"
-        block_post_response = requests.post(blockchain_endpoint, json=block_data).text
-        print(block_post_response)
         return redirect(url_for('requestForm'))
 
 
-@app.route('/tokens', methods=['GET'])
+@app.route('/tokens', methods=['GET', 'POST'])
 def viewAllTokens():
     if request.method == 'GET':
         clientTokensData = {}
         for token in clientTokens:
-            clientTokensData[token] = {'surveyToken': clientTokens[token], 'on-chain': getAssignSurveyToken(clientTokens[token])}
+            clientTokensData[token] = {'surveyToken': clientTokens[token],
+                                       'on-chain': getAssignSurveyToken(clientTokens[token])}
         return render_template('tokens.html',
                                clientTokens=clientTokensData)
