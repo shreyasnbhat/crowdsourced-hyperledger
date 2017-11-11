@@ -16,12 +16,14 @@
                 <textarea class="materialize-textarea deep-purple lighten-2" name="form" rows="10"
                           cols="30">{{ form }}</textarea>
                 <div class="row">
-                    <h5 class="white-text col s4 center">Survey ID</h5>
-                    <h5 class="white-text col s4 center">Pay Out</h5>
-                    <h5 class="white-text col s4 center">Survey Funds</h5>
+                    <h5 class="white-text col s2 offset-s1 center">Survey ID</h5>
+                    <h5 class="white-text col s3 center">Pay Out</h5>
+                    <h5 class="white-text col s3 center">Survey Funds</h5>
+                    <h5 class="white-text col s3 center">Expiry (in days)</h5>
                     <input name="surveyID" value="surveyID-ABCDE" class="col s2 offset-s1 center">
-                    <input name="payOut" value="10" class="col s2 offset-s2 center">
-                    <input name="surveyFunds" value="3000" class="col s2 offset-s2 center">
+                    <input name="payOut" value="10" class="col s1 offset-s1 center">
+                    <input name="surveyFunds" value="3000" class="col s1 offset-s2 center">
+                    <input name="expiry" value="1" class="col s1 offset-s2 center">
                 </div>
                 <center><input type="submit" class="btn waves-effect pink" value="Generate Form"></center>
             </form>

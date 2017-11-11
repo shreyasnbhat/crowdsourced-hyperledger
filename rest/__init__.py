@@ -1,1 +1,0 @@
-REST_API_BASE_ENDPOINT = 'localhost'
