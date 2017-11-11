@@ -4,7 +4,8 @@ from rest.api import *
 from client.app import *
 
 pubKey = 'pubkey'
-consumerAccountNumber = "ca1"
+consumerID = "c2"
+consumerAccountNumber = "ca2"
 clientTokens = []
 
 
@@ -49,34 +50,7 @@ def generateForm():
 
         url = "http://" + session['request-ip'] + ":" + ORGANIZATION_PORT+"/form"
         form = requests.post(url, json={'encryptedRandomMessage': request.form['encryptedRandomMessage'],
-                                        'pubKey': pubKey}).json()
-
-        # form = {"surveyToken": "RANDOM",
-        #         "surveyID": "ABCD-S1",
-        #         "form": {
-        #             "question-1": {
-        #                 "allowedAnswers": {
-        #                     0: "Yes",
-        #                     1: "No"
-        #                 },
-        #                 "question": "Is flask a cool way to design web apps?"
-        #             },
-        #             "question-2": {
-        #                 "allowedAnswers": {
-        #                     0: "Yes",
-        #                     1: "No"
-        #                 },
-        #                 "question": "Is flask a cool way to design web apps?"
-        #             },
-        #             "question-3": {
-        #                 "allowedAnswers": {
-        #                     0: "Yes",
-        #                     1: "No"
-        #                 },
-        #                 "question": "Is flask a cool way to design web apps?"
-        #             }
-        #         }
-        #         }
+                                        'pubKey': pubKey, 'consumerID': consumerID}).json()
 
         if "error" not in dict(form).keys():
             clientTokens.append(form['surveyToken'])

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+<head>
+    {% block head %}
+        {{ super() }}
+    {% endblock %}
+</head>
+<body>
+{% block formNav %}
+    <nav class="nav-extended">
+        <div class="nav-wrapper light-blue darken-3">
+            <a href="#" class="brand-logo left-margin">Survey Client</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                {% block navItems %}
+
+                {% endblock %}
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+{% block body %}
+        <div class="row card-panel cyan darken-1">
+            {{ display }}
+        </div>
+{% endblock %}
+</body>
+</html>
+
+</body>
+</html>

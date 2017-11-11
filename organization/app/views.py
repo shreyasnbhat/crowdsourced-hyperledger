@@ -3,6 +3,7 @@ from random import shuffle, choice
 from string import ascii_uppercase
 from rest.api import *
 from organization.app import *
+from datetime import timedelta
 
 currentRandomMessages = []
 pubKeyList = ['pubkey']
@@ -62,11 +63,17 @@ def generateSurveyToken():
     return surveyToken
 
 
-def publishAssignSurveyToken():
-    pass
+def publishAssignSurveyToken(surveyToken, surveyID, consumerID):
+    status = postAssignSurveyToken(surveyToken, surveyID, consumerID)
 
 
-def retrieveForm():
+def publishSurvey(inputForm, inputSurveyID, payOut):
+    form = inputForm
+    surveyID = inputSurveyID
+    status = postSurvey(surveyID, "oa2", payOut, timedelta(days=1))
+    return status
+
+def retrieveForm(consumerID):
     print("retrieveForm()")
     questions = list(form.keys())
     shuffle(questions)
@@ -78,7 +85,7 @@ def retrieveForm():
     surveyToken = generateSurveyToken()
     formDB[surveyToken] = mapping
     # TODO: implement publishAssignSurveyToken()
-    publishAssignSurveyToken()
+    publishAssignSurveyToken(surveyToken, surveyID, consumerID)
     formPackage = {'surveyID': surveyID, 'surveyToken': surveyToken, 'form': formPermute}
     print(formPackage)
     return formPackage
@@ -96,11 +103,11 @@ def serve_form():
         return jsonify(data)
     else:
         data = request.json
-        if not 'encryptedRandomMessage' in data or not 'pubKey' in data:
+        if not 'encryptedRandomMessage' in data or not 'pubKey' in data or not 'consumerID' in data:
             return jsonify({'error': 'data missing in json'})
         if checkRandomMessage(data['encryptedRandomMessage'], data['pubKey']):
             print("Calling jsonify(retrieveForm())")
-            return jsonify(retrieveForm())
+            return jsonify(retrieveForm(data['consumerID']))
         else:
             return jsonify({'error': 'auth failed'})
 
@@ -109,3 +116,18 @@ def serve_form():
 def serve_form_generate():
     if request.method == 'GET':
         return render_template('form_generate.html', form=form)
+    else:
+        data = request.form
+        if not data:
+            status = {'error': 'no form'}
+        if not 'form' in data or not 'surveyID' in data or not 'payOut' in data:
+            status = {'error': 'data missing in form'}
+        else:
+            status = publishSurvey(data['form'], data['surveyID'], data['payOut'])
+        return render_template('display.html', display=status)
+
+
+@app.route('/form/delete')
+def serve_form_delete():
+    status = deleteSurvey(surveyID)
+    return render_template('display.html', display=status)

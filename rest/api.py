@@ -18,16 +18,19 @@ def postConsumer(id):
     }
     response = requests.post(url + 'Consumer', json=data, headers=headers).json()
     print(response)
+    return response
 
 
 def getConsumer(id):
     response = requests.get(url + 'Consumer/' + id, headers=headers).json()
     print(response)
+    return response
 
 
 def deleteConsumer(id):
     response = requests.delete(url + 'Consumer/' + id, headers=headers).text
     print(response)
+    return response
 
 
 def postConsumerAccount(id, consumerID):
@@ -39,16 +42,19 @@ def postConsumerAccount(id, consumerID):
     }
     response = requests.post(url + 'ConsumerAccount', json=data, headers=headers).json()
     print(response)
+    return response
 
 
 def getConsumerAccount(id):
     response = requests.get(url + 'ConsumerAccount/' + id, headers=headers).json()
     print(response)
+    return response
 
 
 def deleteConsumerAccount(id):
     response = requests.delete(url + 'ConsumerAccount/' + id, headers=headers).text
     print(response)
+    return response
 
 
 def postOrganization(id):
@@ -60,16 +66,19 @@ def postOrganization(id):
     }
     response = requests.post(url + 'Organization', json=data, headers=headers).json()
     print(response)
+    return response
 
 
 def getOrganization(id):
     response = requests.get(url + 'Organization/' + id, headers=headers).json()
     print(response)
+    return response
 
 
 def deleteOrganization(id):
     response = requests.delete(url + 'Organization/' + id, headers=headers).text
     print(response)
+    return response
 
 
 def postOrganizationAccount(id, organizationID):
@@ -81,16 +90,19 @@ def postOrganizationAccount(id, organizationID):
     }
     response = requests.post(url + 'OrganizationAccount', json=data, headers=headers).json()
     print(response)
+    return response
 
 
 def getOrganizationAccount(id):
     response = requests.get(url + 'OrganizationAccount/' + id, headers=headers).json()
     print(response)
+    return response
 
 
 def deleteOrganizationAccount(id):
     response = requests.delete(url + 'OrganizationAccount/' + id, headers=headers).text
     print(response)
+    return response
 
 
 def postSurvey(id, organizationAccountID, payOut, expiryTimeDelta):
@@ -104,16 +116,44 @@ def postSurvey(id, organizationAccountID, payOut, expiryTimeDelta):
     }
     response = requests.post(url + 'Survey', json=data, headers=headers).json()
     print(response)
+    return response
 
 
 def getSurvey(id):
     response = requests.get(url + 'Survey/' + id, headers=headers).json()
     print(response)
+    return response
 
 
 def deleteSurvey(id):
     response = requests.delete(url + 'Survey/' + id, headers=headers).text
     print(response)
+    return response
+
+
+def postAssignSurveyToken(surveyToken, surveyID, consumerID):
+    data = {
+          "$class": "org.acme.survey.AssignSurveyToken",
+          "surveyToken": surveyToken,
+          "claimed": "false",
+          "survey": surveyID,
+          "consumer": consumerID
+        }
+    response = requests.post(url + 'AssignSurveyToken', json=data, headers=headers).json()
+    print(response)
+    return response
+
+
+def getAssignSurveyToken(id):
+    response = requests.get(url + 'AssignSurveyToken/' + id, headers=headers).json()
+    print(response)
+    return response
+
+
+def deleteAssignSurveyToken(id):
+    response = requests.delete(url + 'AssignSurveyToken/' + id, headers=headers).text
+    print(response)
+    return response
 
 
 def postPublishSurvey(surveyID, surveyFunds, organizationAccountID):
@@ -126,6 +166,7 @@ def postPublishSurvey(surveyID, surveyFunds, organizationAccountID):
     }
     response = requests.post(url + 'PublishSurvey', json=data, headers=headers).json()
     print(response)
+    return response
 
 
 def postSubmitSurvey(filledForm, surveyToken, consumerAccountID):
@@ -139,3 +180,4 @@ def postSubmitSurvey(filledForm, surveyToken, consumerAccountID):
     }
     response = requests.post(url + 'SubmitSurvey', json=data, headers=headers).json()
     print(response)
+    return response

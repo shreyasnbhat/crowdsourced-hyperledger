@@ -1,27 +1,31 @@
-from rest import api
+from api import *
 from datetime import timedelta
 
-api.postConsumer("c1")
-api.getConsumer("c1")
+postConsumer("c1")
+getConsumer("c1")
 
-api.postConsumerAccount("ca1","c1")
-api.getConsumerAccount("ca1")
+postConsumerAccount("ca1","c1")
+getConsumerAccount("ca1")
 
-api.postOrganization("o1")
-api.getOrganization("o1")
+postOrganization("o1")
+getOrganization("o1")
 
-api.postOrganizationAccount("oa1","o1")
-api.getOrganizationAccount("oa1")
+postOrganizationAccount("oa1","o1")
+getOrganizationAccount("oa1")
 
-api.postSurvey("s1", "oa1", 10, timedelta(days=1))
-api.getSurvey("s1")
+postSurvey("s1", "oa1", 10, timedelta(days=1))
+getSurvey("s1")
 
-api.postPublishSurvey("s1", 9899, "oa1")
-api.getSurvey("s1")
-api.getOrganizationAccount("oa1")
+postPublishSurvey("s1", 9000, "oa1")
+getSurvey("s1")
+getOrganizationAccount("oa1")
 
-api.deleteConsumerAccount("ca1")
-api.deleteConsumer("c1")
-api.deleteSurvey("s1")
-api.deleteOrganizationAccount("oa1")
-api.deleteOrganization("o1")
+postAssignSurveyToken("st1", "s1", "c1")
+getAssignSurveyToken("st1")
+
+deleteAssignSurveyToken("st1")
+deleteConsumerAccount("ca1")
+deleteConsumer("c1")
+deleteSurvey("s1")
+deleteOrganizationAccount("oa1")
+deleteOrganization("o1")
