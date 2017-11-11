@@ -1,13 +1,8 @@
-#!/usr/bin/python
+import json
+from flask import render_template, request, redirect, url_for, session
+from rest.api import *
+from client.app import *
 
-import sys
-from flask import Flask, render_template, request, abort, redirect, url_for, session
-import requests, json
-# TODO: import this
-# from rest_api import rest_api
-
-app = Flask(__name__)
-app.secret_key = 'secret_key'
 pubKey = 'pubkey'
 consumerAccountNumber = "ca1"
 clientTokens = []
@@ -16,10 +11,11 @@ clientTokens = []
 def encrypt(randomMessage):
     return randomMessage[::-1]
 
+
 @app.route('/test', methods=['GET'])
 def serve_test():
-    # TODO: Test this
-    return "str(getTimestamp())"
+    return str(getTimestamp())
+
 
 @app.route('/requestForm', methods=['GET'])
 def requestForm():
@@ -33,9 +29,8 @@ def sendHash():
         request_ip = request.form['request-ip']
         session['request-ip'] = request_ip
 
-        url = "http://" + request_ip + ":9899/form"
+        url = "http://" + request_ip + ":"+ORGANIZATION_PORT+"/form"
         randomMessage = requests.get(url).json()['randomMessage']
-        # randomMessage = "RANDOMTOKEN"
         encryptedRandomMessage = encrypt(randomMessage)
 
         return render_template('sendHash.html',
@@ -52,8 +47,9 @@ def generateForm():
     if request.method == 'POST':
         print(session['request-ip'])
 
-        url = "http://" + session['request-ip'] + ":9899/form"
-        form = requests.post(url,json={'encryptedRandomMessage': request.form['encryptedRandomMessage'],'pubKey': pubKey}).json()
+        url = "http://" + session['request-ip'] + ":" + ORGANIZATION_PORT+"/form"
+        form = requests.post(url, json={'encryptedRandomMessage': request.form['encryptedRandomMessage'],
+                                        'pubKey': pubKey}).json()
 
         # form = {"surveyToken": "RANDOM",
         #         "surveyID": "ABCD-S1",
@@ -98,7 +94,6 @@ def generateForm():
         return redirect(url_for('requestForm'))
 
 
-
 @app.route('/publishBlock/<string:surveyID>', methods=['GET', 'POST'])
 def publishBlockOnFabric(surveyID):
     if request.method == 'POST':
@@ -126,19 +121,3 @@ def viewAllTokens():
     if request.method == 'GET':
         return render_template('tokens.html',
                                clientTokens=clientTokens)
-
-
-if __name__ == '__main__':
-
-    deploy_mode = str(sys.argv[1])
-    port = int(sys.argv[2])
-
-    if deploy_mode == 'debug' or deploy_mode == 'd':
-        app.debug = True
-        app.run(host='localhost', port=port)
-
-    elif deploy_mode == 'production' or deploy_mode == 'p':
-        app.run(host='0.0.0.0', port=port)
-
-    else:
-        print("Usage: python run.py <[d/debug]/[p/production]> PORT")
