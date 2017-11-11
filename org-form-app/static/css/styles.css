@@ -1,0 +1,36 @@
+.form-header {
+    font-family: 'Bitter', serif;
+}
+
+.block-style {
+    padding: 10px;
+    margin: 10px;
+}
+
+.left-margin {
+    margin-left: 10px;
+}
+
+.question-font {
+    font-family: 'Raleway', serif;
+
+}
+
+body{
+    background: #eceff1;
+}
+
+.nav-color{
+    background: #01579b;
+}
+
+.question-border {
+    border: solid;
+    border-color: #01579b;
+    border-width: 2px;
+}
+
+.margin-top {
+    margin-top: 50px;
+}
+
