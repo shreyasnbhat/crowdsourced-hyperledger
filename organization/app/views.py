@@ -69,6 +69,7 @@ def publishAssignSurveyToken(surveyToken, surveyID, consumerID):
 
 def publishSurvey(inputForm, inputSurveyID, payOut):
     form = inputForm
+    global surveyID
     surveyID = inputSurveyID
     status = postSurvey(surveyID, "oa2", payOut, timedelta(days=1))
     return status
@@ -131,3 +132,7 @@ def serve_form_generate():
 def serve_form_delete():
     status = deleteSurvey(surveyID)
     return render_template('display.html', display=status)
+
+@app.route('/form/status')
+def serve_form_status():
+    return render_template('display.html', display={'surveyID': surveyID})

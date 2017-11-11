@@ -6,7 +6,7 @@ from client.app import *
 pubKey = 'pubkey'
 consumerID = "c2"
 consumerAccountNumber = "ca2"
-clientTokens = []
+clientTokens = {}
 
 
 def encrypt(randomMessage):
@@ -53,7 +53,7 @@ def generateForm():
                                         'pubKey': pubKey, 'consumerID': consumerID}).json()
 
         if "error" not in dict(form).keys():
-            clientTokens.append(form['surveyToken'])
+            clientTokens[form['surveyID']] = form['surveyToken']
             print(clientTokens)
             return render_template('form.html',
                                    randomMessage='Authenticated',

@@ -12,7 +12,7 @@
             <div>
                 <form method="POST" action="{{ url_for('serve_form_generate') }}" class="white-text">
                     <label for="form" class="white-text">Form</label>
-                    <textarea name="form" rows="10" cols="30">{{form}}</textarea>
+                    <textarea class="materialize-textarea pink lighten-3" name="form" rows="10" cols="30">{{form}}</textarea>
                     <label for="surveyID" class="white-text">Survey ID</label>
                     <input name="surveyID" value="surveyID-ABCDE">
                     <label for="payOut" class="white-text">Pay Out</label>
