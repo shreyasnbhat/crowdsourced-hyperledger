@@ -69,11 +69,11 @@ def publishAssignSurveyToken(surveyToken, surveyID, consumerID):
     status = postAssignSurveyToken(surveyToken, surveyID, consumerID)
 
 
-def publishSurvey(inputForm, inputSurveyID, payOut):
+def publishSurvey(inputForm, inputSurveyID, payOut, expiry):
     form = inputForm
     global surveyID
     surveyID = inputSurveyID
-    status = postSurvey(surveyID, "oa2", payOut, timedelta(days=1))
+    status = postSurvey(surveyID, "oa2", payOut, timedelta(days=expiry))
     return status
 
 def retrieveForm(consumerID):
@@ -123,11 +123,11 @@ def serve_form_generate():
         data = request.form
         if not data:
             status = {'error': 'no form'}
-        if not 'form' in data or not 'surveyID' in data or not 'surveyFunds' in data or not 'payOut' in data:
+        if not 'form' in data or not 'surveyID' in data or not 'surveyFunds' in data or not 'payOut' in data or not 'expiry' in data:
             status = {'error': 'data missing in form'}
         else:
             status = []
-            status.append(publishSurvey(data['form'], data['surveyID'], data['payOut']))
+            status.append(publishSurvey(data['form'], data['surveyID'], data['payOut'], int(data['expiry'])))
             status.append(postPublishSurvey(data['surveyID'], data['surveyFunds'], organizationAccountID))
             status.append(getSurvey(data['surveyID']))
         return render_template('display.html', display=status)

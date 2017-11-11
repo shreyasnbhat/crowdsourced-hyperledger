@@ -1,1 +1,2 @@
 *.pyc
+./rest/__init__.py
