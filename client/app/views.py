@@ -93,8 +93,12 @@ def publishBlockOnFabric(surveyID):
 def viewAllTokens():
     if request.method == 'GET':
         clientTokensData = {}
+        tokenClaimStatus = {}
         for token in clientTokens:
+            tokenClaimStatus[clientTokens[token]] = getAssignSurveyToken(clientTokens[token])['claimed']
+            print(tokenClaimStatus)
             clientTokensData[token] = {'surveyToken': clientTokens[token],
                                        'on-chain': getAssignSurveyToken(clientTokens[token])}
         return render_template('tokens.html',
-                               clientTokens=clientTokensData)
+                               clientTokens=clientTokensData,
+                               claimed=tokenClaimStatus)
