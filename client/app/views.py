@@ -84,7 +84,7 @@ def publishBlockOnFabric(surveyID):
     if request.method == 'POST':
         filledForm = json.dumps(request.form)
 
-        postSubmitSurvey(filledForm, surveyToken, consumerID)
+        postSubmitSurvey(filledForm, clientTokens[surveyID], consumerID)
 
         return redirect(url_for('requestForm'))
 

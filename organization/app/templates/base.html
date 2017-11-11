@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     {% block head %}
-    <meta charset="UTF-8">
-    <title>Organization Web App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Bitter|Indie+Flower|Nunito|Raleway|Spectral+SC|Vollkorn+SC"
-          rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static',filename = 'css/styles.css') }}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta charset="UTF-8">
+        <title>Organization Web App</title>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Bitter|Indie+Flower|Nunito|Raleway|Spectral+SC|Vollkorn+SC"
+              rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static',filename = 'css/styles.css') }}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     {% endblock %}
 </head>
 <body>
@@ -18,9 +19,9 @@
         <a href="#" class="brand-logo left left-margin">Organization Web App</a>
         <ul id="nav-mobile" class="right">
             {% block navItems %}
-            <li><a href="{{ url_for('serve_form_generate') }}">Generate Form</a></li>
-            <li><a href="{{ url_for('serve_form_delete') }}">Delete Form</a></li>
-            <li><a href="{{ url_for('serve_form_status') }}">Form Status</a></li>
+                <li><a href="{{ url_for('serve_form_generate') }}">Generate Form</a></li>
+                <li><a href="{{ url_for('serve_form_delete') }}">Delete Form</a></li>
+                <li><a href="{{ url_for('serve_form_status') }}">Form Status</a></li>
             {% endblock %}
         </ul>
     </div>

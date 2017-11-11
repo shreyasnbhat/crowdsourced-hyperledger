@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 {% extends "base.html" %}
 <head>
@@ -7,19 +7,6 @@
     {% endblock %}
 </head>
 <body>
-{% block formNav %}
-    <nav class="nav-extended">
-        <div class="nav-wrapper light-blue darken-3">
-            <a href="#" class="brand-logo left-margin">Survey Client</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                {% block navItems %}
-                    <li class="active"><a href="{{ url_for('requestForm') }}">Form Request</a></li>
-                    <li><a href="{{ url_for('viewAllTokens') }}">Tokens</a></li>
-                {% endblock %}
-            </ul>
-        </div>
-    </nav>
-{% endblock %}
 {% block body %}
     {% if clientTokens %}
         {% for token in clientTokens %}
@@ -30,6 +17,9 @@
                         <input value="true" type="hidden" name="from-token">
                         <input value="{{ clientTokens[token]['surveyToken'] }}" type="text" name="surveyToken"
                                class="validate white-text form-header">
+                        <div>
+                            <p class="block-style white-text">{{ clientTokens[token]['on-chain'] }}</p>
+                        </div>
                         <input type="submit" class="waves-effect waves-light btn light-blue darken-4"
                                value="Use Token">
 

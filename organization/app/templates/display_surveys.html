@@ -7,26 +7,14 @@
     {% endblock %}
 </head>
 <body>
-{% block formNav %}
-    <nav class="nav-extended">
-        <div class="nav-wrapper light-blue darken-3">
-            <a href="#" class="brand-logo left-margin">Survey Client</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                {% block navItems %}
-
-                {% endblock %}
-            </ul>
-        </div>
-    </nav>
-{% endblock %}
 {% block body %}
     {% for survey in display %}
         <div class="pink lighten-2 white-text">
             <div class="pink">
-                <h3 class="block-style"><center>{{ survey['surveyID'] }}</center></h3>
+                <h3 class="block-style">{{ survey['surveyID'] }}</h3>
             </div>
             <div class="block-style">
-            {{ survey }}
+                {{ survey }}
             </div>
         </div>
     {% endfor %}
