@@ -133,6 +133,19 @@ def serve_form_delete():
     status = deleteSurvey(surveyID)
     return render_template('display.html', display=status)
 
+
 @app.route('/form/status')
 def serve_form_status():
     return render_template('display.html', display={'surveyID': surveyID})
+
+
+@app.route('/display/survey')
+def serve_display_survey():
+    display = getSurvey('')
+    return render_template('display_surveys.html', display=display)
+
+
+@app.route('/display/assignSurveyToken')
+def serve_display_assignSurveyToken():
+    display = getAssignSurveyToken('')
+    return render_template('display_blocks.html', display=display)

@@ -13,23 +13,18 @@
             <a href="#" class="brand-logo left-margin">Survey Client</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 {% block navItems %}
-                    <li class="active"><a href="{{ url_for('requestForm') }}">Form Request</a></li>
-                    <li><a href="{{ url_for('viewAllTokens') }}">Tokens</a></li>
+
                 {% endblock %}
             </ul>
         </div>
     </nav>
 {% endblock %}
 {% block body %}
-    {% if clientTokens %}
-            {% for token in clientTokens %}
-                <div class="row card-panel green darken-1">
-                    <div class="col s12">
-                        <h5 class="white-text center">{{token}}: {{clientTokens[token]}}</h5>
-                    </div>
-                </div>
-            {% endfor %}
-    {% endif %}
+    {% for item in display %}
+        <div class="row card-panel pink lighten-2 white-text">
+            {{item}}
+        </div>
+    {% endfor %}
 {% endblock %}
 </body>
 </html>

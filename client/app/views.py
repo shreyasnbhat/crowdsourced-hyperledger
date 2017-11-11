@@ -93,5 +93,8 @@ def publishBlockOnFabric(surveyID):
 @app.route('/tokens', methods=['GET'])
 def viewAllTokens():
     if request.method == 'GET':
+        clientTokensData = {}
+        for token in clientTokens:
+            clientTokensData[token] = {'surveyToken': clientTokens[token], 'on-chain': getAssignSurveyToken(clientTokens[token])}
         return render_template('tokens.html',
-                               clientTokens=clientTokens)
+                               clientTokens=clientTokensData)

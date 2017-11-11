@@ -7,17 +7,7 @@
     {% endblock %}
 </head>
 <body>
-<nav class="nav-extended">
-    <div class="nav-wrapper light-blue darken-3">
-        <a href="#" class="brand-logo left-margin">Survey Client</a>
-        {% block navItems %}
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li class="active"><a href="{{ url_for('requestForm') }}">Form Request</a></li>
-            <li><a href="{{ url_for('viewAllTokens') }}">Tokens</a></li>
-        {% endblock %}
-        </ul>
-    </div>
-</nav>
+
 {% block body %}
     {% block subBody %}
         {% if randomMessage %}
