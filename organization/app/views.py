@@ -11,6 +11,7 @@ organizationAccountID = "oa2"
 currentRandomMessages = []
 pubKeyList = ['pubkey']
 pubKeyClaimedToken = {}
+formMappingDB = {}
 formDB = {}
 surveyID = ''
 surveyID_DB = []
@@ -75,6 +76,7 @@ def publishAssignSurveyToken(surveyToken, surveyID, consumerID):
 
 def publishSurvey(inputForm, inputSurveyID, payOut, expiry, questionRange, optionRange):
     global form
+    global formDB
     global surveyID
     global surveyID_DB
     form = inputForm
@@ -82,6 +84,8 @@ def publishSurvey(inputForm, inputSurveyID, payOut, expiry, questionRange, optio
         return False
     surveyID = inputSurveyID
     surveyID_DB.append(surveyID)
+    if surveyID not in formDB and surveyID!='':
+        formDB[surveyID] = form
     status = postSurvey(surveyID, form, "localhost", "oa2", payOut, timedelta(days=expiry), questionRange, optionRange)
     return status
 
@@ -90,13 +94,14 @@ def generateFormForConsumer(consumerID):
     print(form)
     questions = list(form.keys())
     shuffle(questions)
+    # mapping stores ( original question no.: new question no. )
     mapping = dict(zip(form.keys(), questions))
     print(mapping)
     formPermute = {}
     for key in mapping:
         formPermute[mapping[key]] = form[key]
     surveyToken = generateSurveyToken()
-    formDB[surveyToken] = mapping
+    formMappingDB[surveyToken] = mapping
     # TODO: implement publishAssignSurveyToken()
     publishAssignSurveyToken(surveyToken, surveyID, consumerID)
     formPackage = {'surveyID': surveyID, 'surveyToken': surveyToken, 'form': formPermute}
@@ -107,11 +112,22 @@ def generateFormForConsumer(consumerID):
 def retreiveSubmittedForm(surveyID):
     submitSurveys = getGeneral('SubmitSurvey')
     assignSurveyTokens = getGeneral('AssignSurveyToken')
+    temp_target = []
     target = []
     for submitSurvey in submitSurveys:
         for assignSurveyToken in assignSurveyTokens:
-            if(assignSurveyToken['claimed'] and assignSurveyToken['survey'].split('#')[1]==surveyID and assignSurveyToken['surveyToken']==submitSurvey['surveyToken']):
-                target.append((submitSurvey, assignSurveyToken))
+            if(assignSurveyToken['claimed'] and assignSurveyToken['survey'].split('#')[1]==surveyID and assignSurveyToken['surveyToken']==submitSurvey['surveyToken'] and assignSurveyToken['surveyToken'] in formMappingDB):
+                submittedForm = {}
+                filledForm = json.loads(submitSurvey['filledForm'])
+                mapping = formMappingDB[assignSurveyToken['surveyToken']]
+                for q in mapping:
+                    submittedForm[q] = filledForm[mapping[q]]
+                temp_target.append((submitSurvey, assignSurveyToken, formMappingDB[assignSurveyToken['surveyToken']], formDB[surveyID], submittedForm))
+                formValues = {}
+                form = formDB[surveyID]
+                for q in submittedForm:
+                    formValues[form[q]['question']] = form[q]['allowedAnswers'][submittedForm[q]]
+                target.append(formValues)
     return target
 
 
@@ -178,7 +194,6 @@ def serve_form_retrieve():
     if request.method=='GET':
         return render_template('form_retrieve.html', display=retreiveSubmittedForm(surveyID), surveyID_DB=surveyID_DB)
     else:
-        # return render_template('display.html', display=request.form)
         return render_template('form_retrieve.html', display=retreiveSubmittedForm(request.form['arg']), surveyID_DB=surveyID_DB)
 
 
@@ -194,6 +209,7 @@ def serve_display_status():
     display.append(getOrganizationAccount("oa2"))
     display.append({'surveyID': surveyID})
     display.append({'surveyID_DB': surveyID_DB})
+    display.append({'formDB': formDB})
     for sid in surveyID_DB:
         display.append(getSurvey(sid))
     return render_template('display_blocks.html', display=display)

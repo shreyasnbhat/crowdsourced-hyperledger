@@ -10,7 +10,7 @@
 {% block body %}
     <div class="row card-panel white-text deep-purple darken-1">
         <form method="POST" action="{{ url_for('serve_form_retrieve') }}">
-            <label for="arg"><h4><center>Type of participant, asset or transaction:</h4></center></label>
+            <label for="arg"><h4><center>Select Survey ID:</h4></center></label>
             <select class="browser-default deep-purple darken-1 white-text" name="arg">
                 <option value="" disabled selected>Select Survey ID</option>
                 {% for surveyID in surveyID_DB %}
