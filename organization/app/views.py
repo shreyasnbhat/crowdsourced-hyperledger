@@ -166,7 +166,7 @@ def serve_form_status():
     return render_template('display.html', display={'surveyID': surveyID, 'surveyID_DB': surveyID_DB})
 
 
-@app.route('/form/retrieve')
+@app.route('/form/retrieve', methods=['GET', 'POST'])
 def serve_form_retrieve():
     if request.method=='GET':
         return render_template('form_retrieve.html', display=retreiveSubmittedForm(surveyID), surveyID_DB=surveyID_DB)
