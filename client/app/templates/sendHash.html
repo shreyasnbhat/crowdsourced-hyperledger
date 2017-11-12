@@ -23,27 +23,28 @@
                         <p class="white-text center">Unauthenticated</p>
                     </div>
                 {% endif %}
-                <div class="row">
-                    <div class="col card-panel s8 offset-s2 blue-grey lighten-2">
+            </div>
+            <div class="row block-style">
+                <div class="card-panel col s8 offset-s2 yellow darken-4">
+                    <div class="row">
+                        <div class="center">
+                            <h5 class="question-font white-text">The organization has asked you to hash <p class="form-header">{{ randomMessage }}</p> using your public key
+                            </h5>
+                        </div>
+                    </div>
+                    <form action="{{ url_for('generateForm') }}" method="POST" class="block-style">
                         <div class="row">
-                            <div class="col">
-                            The organization has asked you to hash this string using your public key: {{randomMessage}}
+                            <label class="white-text">Hashed String</label>
+                            <div class="input-field">
+                                <input id="ip" type="hidden" class="validate" name="encryptedRandomMessage"
+                                       value="{{ encryptedRandomMessage }}">
+                                <input id="ip" type="text" class="validate white-text" name="display-token"
+                                       value="{{ encryptedRandomMessage }}" disabled>
                             </div>
                         </div>
-                        <form action="{{ url_for('generateForm') }}" method="POST">
-                            <div class="row">
-                                <label class="">Hashed string:</label>
-                                <div class="input-field col s12">
-                                    <input id="ip" type="hidden" class="validate" name="encryptedRandomMessage"
-                                           value="{{ encryptedRandomMessage }}">
-                                    <input id="ip" type="text" class="validate" name="display-token"
-                                           value="{{ encryptedRandomMessage }}" disabled>
-                                </div>
-                            </div>
-                            <center><input type="submit" class="waves-effect waves-light btn light-blue darken-4"
-                                   value="Authenticate"></center>
-                        </form>
-                    </div>
+                        <center><input type="submit" class="waves-effect waves-light btn deep-orange darken-4"
+                                       value="Authenticate"></center>
+                    </form>
                 </div>
             </div>
         {% endif %}
