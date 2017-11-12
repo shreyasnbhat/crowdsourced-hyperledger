@@ -11,7 +11,7 @@ currentRandomMessages = []
 pubKeyList = ['pubkey']
 pubKeyClaimedToken = {}
 formDB = {}
-surveyID = 'surveyID-ABCDE'
+surveyID = ''
 surveyID_DB = []
 form = {
     'question1': {
@@ -83,8 +83,8 @@ def publishSurvey(inputForm, inputSurveyID, payOut, expiry, questionRange, optio
     status = postSurvey(surveyID, "oa2", payOut, timedelta(days=expiry), questionRange, optionRange)
     return status
 
-def retrieveForm(consumerID):
-    print("retrieveForm()")
+def generateFormForConsumer(consumerID):
+    print("generateFormForConsumer()")
     questions = list(form.keys())
     shuffle(questions)
     mapping = dict(zip(form.keys(), questions))
@@ -99,6 +99,17 @@ def retrieveForm(consumerID):
     formPackage = {'surveyID': surveyID, 'surveyToken': surveyToken, 'form': formPermute}
     print(formPackage)
     return formPackage
+
+
+def retreiveSubmittedForm(surveyID):
+    submitSurveys = getGeneral('SubmitSurvey')
+    assignSurveyTokens = getGeneral('AssignSurveyToken')
+    target = []
+    for submitSurvey in submitSurveys:
+        for assignSurveyToken in assignSurveyTokens:
+            if(assignSurveyToken['claimed'] and assignSurveyToken['survey'].split('#')[1]==surveyID and assignSurveyToken['surveyToken']==submitSurvey['surveyToken']):
+                target.append((submitSurvey, assignSurveyToken))
+    return target
 
 
 @app.route('/test', methods=['GET'])
@@ -116,8 +127,8 @@ def serve_form():
         if not 'encryptedRandomMessage' in data or not 'pubKey' in data or not 'consumerID' in data:
             return jsonify({'error': 'data missing in json'})
         if checkRandomMessage(data['encryptedRandomMessage'], data['pubKey']):
-            print("Calling jsonify(retrieveForm())")
-            return jsonify(retrieveForm(data['consumerID']))
+            print("Calling jsonify(generateFormForConsumer())")
+            return jsonify(generateFormForConsumer(data['consumerID']))
         else:
             return jsonify({'error': 'auth failed'})
 
@@ -153,6 +164,15 @@ def serve_form_delete():
 @app.route('/form/status')
 def serve_form_status():
     return render_template('display.html', display={'surveyID': surveyID, 'surveyID_DB': surveyID_DB})
+
+
+@app.route('/form/retrieve')
+def serve_form_retrieve():
+    if request.method=='GET':
+        return render_template('form_retrieve.html', display=retreiveSubmittedForm(surveyID), surveyID_DB=surveyID_DB)
+    else:
+        # return render_template('display.html', display=request.form)
+        return render_template('form_retrieve.html', display=retreiveSubmittedForm(request.form['arg']), surveyID_DB=surveyID_DB)
 
 
 @app.route('/display/survey')
