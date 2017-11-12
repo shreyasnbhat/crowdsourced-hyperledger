@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+<head>
+    {% block head %}
+        {{ super() }}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    {% for item in display %}
+        <div class="row card-panel pink lighten-2 white-text">
+            {% for key in item %}
+                <div>
+                    <div class="col s4 form-header">{{ key }}</div>
+                    <div class="col s8">{{ item[key] }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <form action="{{ url_for('requestForm') }}" method="POST">
+            <input type="hidden" name="request_ip" value="{{ item['website'] }}">
+            <input type="submit" class="waves-effect waves-light btn  green darken-4"
+                   value="Get Form">
+        </form>
+    {% endfor %}
+{% endblock %}
+</body>
+</html>

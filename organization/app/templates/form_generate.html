@@ -12,15 +12,15 @@
     <div class="row card-panel white-text deep-purple darken-1">
         <div>
             <form method="POST" action="{{ url_for('serve_form_generate') }}" class="white-text">
-                <h5 class="white-text">Form</h5>
-                <div class="input-field col s12">
-                <textarea class="materialize-textarea deep-purple lighten-2" id="myTextArea" name="form" rows="30"
+                <h5 class="block-style form-header">Form</h5>
+                <textarea class="border block-style pink lighten-2 medium-font" id="myTextArea" name="form" rows="30"
                           cols="30">{{ form }}</textarea>
-                </div>
+                <br>
                 <h5 class="block-style form-header">JSON Logs</h5>
-                <div id="prettyRes" class="row block-style"></div>
+                <div id="prettyRes" class="block-style question-font"></div>
                 <div class="row">
-                    <a class="waves-effect waves-light btn col s2 offset-s10 pink" onclick="prettyPrint()">Pretty Print</a>
+                    <a class="waves-effect waves-light btn col s2 offset-s10 pink" onclick="prettyPrint()">Pretty
+                        Print</a>
                 </div>
                 <script>
                     function prettyPrint() {
@@ -29,9 +29,10 @@
                         try {
                             var obj = JSON.parse(obj_ini);
                             var pretty = JSON.stringify(obj, undefined, 4);
-                            document.getElementById('prettyRes').innerHTML = pretty;
+                            document.getElementById('myTextArea').value = pretty;
+                            document.getElementById('prettyRes').innerHTML = "Looks good!";
                         } catch (err) {
-                            document.getElementById('prettyRes').innerHTML = "Error in JSON Formatting";
+                            document.getElementById('prettyRes').innerHTML = "Error in JSON Formatting!";
                         }
                     }
                 </script>

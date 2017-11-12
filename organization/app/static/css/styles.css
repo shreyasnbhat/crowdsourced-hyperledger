@@ -34,3 +34,14 @@ body{
     margin-top: 50px;
 }
 
+.border {
+    border-radius: 5px;
+    border: solid;
+    border-width: 1px;
+    border-color: #880e4f;
+    height: 300px;
+}
+
+.medium-font {
+    font-size: 20px;
+}
