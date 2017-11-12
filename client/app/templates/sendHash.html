@@ -14,30 +14,37 @@
                 {% if authenticated %}
                     <div class="card-panel green darken-1 block-style">
                         <h5 class="white-text center form-header">Organization Server sent a message!</h5>
-                        <h4 class="white-text center"><strong>{{ surveyID }}</strong></h4>
-                        <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
+                        <h4 class="white-text center"><strong>Survey ID: {{ surveyID }}</strong></h4>
                     </div>
                 {% else %}
                     <div class="card-panel red darken-1 block-style">
                         <h5 class="white-text center form-header">Organization Server sent a message!</h5>
-                        <h4 class="white-text center"><strong>{{ surveyID }}</strong></h4>
-                        <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
+                        <h4 class="white-text center"><strong>Survey ID: {{ surveyID }}</strong></h4>
                         <p class="white-text center">Unauthenticated</p>
                     </div>
                 {% endif %}
-                <form action="{{ url_for('generateForm') }}" method="POST">
-                    <div class="row block-style">
-                        <div class="input-field col s12">
-                            <input id="ip" type="hidden" class="validate" name="encryptedRandomMessage"
-                                   value="{{ encryptedRandomMessage }}">
-                            <label for="ip" class="active">Hash</label>
-                            <input id="ip" type="text" class="validate" name="display-token"
-                                   value="{{ encryptedRandomMessage }}" disabled>
+                <div class="row">
+                    <div class="col card-panel s8 offset-s2 blue-grey lighten-2">
+                        <div class="row">
+                            <div class="col">
+                            The organization has asked you to hash this string using your public key: {{randomMessage}}
+                            </div>
                         </div>
+                        <form action="{{ url_for('generateForm') }}" method="POST">
+                            <div class="row">
+                                <label class="">Hashed string:</label>
+                                <div class="input-field col s12">
+                                    <input id="ip" type="hidden" class="validate" name="encryptedRandomMessage"
+                                           value="{{ encryptedRandomMessage }}">
+                                    <input id="ip" type="text" class="validate" name="display-token"
+                                           value="{{ encryptedRandomMessage }}" disabled>
+                                </div>
+                            </div>
+                            <center><input type="submit" class="waves-effect waves-light btn light-blue darken-4"
+                                   value="Authenticate"></center>
+                        </form>
                     </div>
-                    <input type="submit" class="waves-effect waves-light btn light-blue darken-4"
-                           value="Authenticate">
-                </form>
+                </div>
             </div>
         {% endif %}
     {% endblock %}

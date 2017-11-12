@@ -11,7 +11,18 @@
     <div class="row card-panel white-text deep-purple darken-1">
         <form method="POST" action="{{ url_for('serve_display_general') }}">
             <label for="arg"><h4><center>Type of participant, asset or transaction:</h4></center></label>
-            <input type="text" name="arg">
+            <select class="browser-default deep-purple darken-1 white-text" name="arg">
+                <option value="" disabled selected>Select participant, asset or transaction</option>
+                <option value="Consumer">Consumer</option>
+                <option value="ConsumerAccount">ConsumerAccount</option>
+                <option value="Organization">Organization</option>
+                <option value="OrganizationAccount">OrganizationAccount</option>
+                <option value="Survey">Survey</option>
+                <option value="PublishSurvey">PublishSurvey</option>
+                <option value="AssignSurveyToken">AssignSurveyToken</option>
+                <option value="SubmitSurvey">SubmitSurvey</option>
+            </select>
+            <br>
             <center><input type="submit" class="btn waves-effect pink" value="Display"></center>
         </form>
     </div>

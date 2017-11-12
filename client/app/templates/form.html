@@ -14,14 +14,15 @@
                 {% if authenticated %}
                     <div class="card-panel green darken-1 block-style">
                         <h5 class="white-text center form-header">Organization Server sent a message!</h5>
-                        <h4 class="white-text center"><strong>{{ surveyID }}</strong></h4>
-                        <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
+                        <h3 class="white-text center"><strong>Survey ID: {{ surveyID }}</strong></h3>
+                        <h3 class="white-text center"><strong>Survey Token:{{ surveyToken }}</strong></h3>
+                        <h3 class="white-text center"><strong>{{ randomMessage }}</strong></h3>
                     </div>
                 {% else %}
                     <div class="card-panel red darken-1 block-style">
                         <h5 class="white-text center form-header">Organization Server sent a message!</h5>
-                        <h4 class="white-text center"><strong>{{ surveyID }}</strong></h4>
-                        <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
+                        <h3 class="white-text center"><strong>Survey ID: {{ surveyID }}</strong></h3>
+                        <h3 class="white-text center"><strong>{{ randomMessage }}</strong></h3>
                         <p class="white-text center">Unauthenticated</p>
                     </div>
                 {% endif %}
@@ -41,7 +42,7 @@
                                 <label>Options</label>
                                 <select class="browser-default" name="{{ question }}">
                                     {% for allowedAnswers in response['form'][question]['allowedAnswers'] %}
-                                        <option value="{{ response['form'][question]['allowedAnswers'][allowedAnswers] }}">{{ response['form'][question]['allowedAnswers'][allowedAnswers] }}</option>
+                                        <option value="{{ allowedAnswers }}">{{ response['form'][question]['allowedAnswers'][allowedAnswers] }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

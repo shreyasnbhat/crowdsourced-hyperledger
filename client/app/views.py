@@ -58,6 +58,7 @@ def generateForm():
                                    randomMessage='Authenticated',
                                    response=form,
                                    surveyID=surveyID,
+                                   surveyToken=surveyToken,
                                    authenticated=True)
         else:
             url = "http://" + session['request-ip'] + ":" + ORGANIZATION_PORT + "/form"
@@ -73,6 +74,7 @@ def generateForm():
                                        randomMessage='Authenticated',
                                        response=form,
                                        surveyID=form['surveyID'],
+                                       surveyToken=form['surveyToken'],
                                        authenticated=True)
             else:
                 return render_template('form.html',
@@ -87,7 +89,7 @@ def publishBlockOnFabric(surveyID):
     if request.method == 'POST':
         filledForm = json.dumps(request.form)
         # TODO: Replace "valid" with filledForm
-        postSubmitSurvey("valid", clientTokens[surveyID], consumerAccountID)
+        postSubmitSurvey(filledForm, clientTokens[surveyID], consumerAccountID)
         return redirect(url_for('requestForm'))
 
 
@@ -97,10 +99,11 @@ def viewAllTokens():
         clientTokensData = {}
         tokenClaimStatus = {}
         for token in clientTokens:
-            tokenClaimStatus[clientTokens[token]] = getAssignSurveyToken(clientTokens[token])['claimed']
+            assignSurveyToken = getAssignSurveyToken(clientTokens[token])
+            tokenClaimStatus[clientTokens[token]] = assignSurveyToken['claimed']
             print(tokenClaimStatus)
             clientTokensData[token] = {'surveyToken': clientTokens[token],
-                                       'on-chain': getAssignSurveyToken(clientTokens[token])}
+                                       'on-chain': assignSurveyToken}
         return render_template('tokens.html',
                                clientTokens=clientTokensData, claimed=tokenClaimStatus)
 

@@ -114,14 +114,15 @@ def deleteOrganizationAccount(id):
     return response
 
 
-def postSurvey(id, organizationAccountID, payOut, expiryTimeDelta, optionRange):
+def postSurvey(id, organizationAccountID, payOut, expiryTimeDelta, questionRange, optionRange):
     data = {
         "$class": "org.acme.survey.Survey",
         "surveyID": id,
         "expiryTime": str((datetime.now() + expiryTimeDelta).isoformat()),
         "payOut": payOut,
         "tokens": 0,
-        "optionRange": int(optionRange),
+        "questionRange": questionRange,
+        "optionRange": optionRange,
         "organizationAccount": organizationAccountID
     }
     response = requests.post(url + 'Survey', json=data, headers=headers).json()

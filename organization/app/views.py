@@ -14,15 +14,15 @@ formDB = {}
 surveyID = 'surveyID-ABCDE'
 surveyID_DB = []
 form = {
-    'question-1': {
+    'question1': {
         'question': 'Kya aapke masudo me dard hai?',
         'allowedAnswers': {'1': 'Haan', '2': 'Na'}
     },
-    'question-2': {
+    'question2': {
         'question': 'Kya aapke toothpaste me namak hai?',
         'allowedAnswers': {'1': 'Haan', '2': 'Na'}
     },
-    'question-3': {
+    'question3': {
         'question': 'Kya aap chutiye ho?',
         'allowedAnswers': {'1': 'Haan', '2': 'Na'}
     }
@@ -72,7 +72,7 @@ def publishAssignSurveyToken(surveyToken, surveyID, consumerID):
     status = postAssignSurveyToken(surveyToken, surveyID, consumerID)
 
 
-def publishSurvey(inputForm, inputSurveyID, payOut, expiry, optionRange):
+def publishSurvey(inputForm, inputSurveyID, payOut, expiry, questionRange, optionRange):
     form = inputForm
     global surveyID
     global surveyID_DB
@@ -80,7 +80,7 @@ def publishSurvey(inputForm, inputSurveyID, payOut, expiry, optionRange):
         return False
     surveyID = inputSurveyID
     surveyID_DB.append(surveyID)
-    status = postSurvey(surveyID, "oa2", payOut, timedelta(days=expiry), optionRange)
+    status = postSurvey(surveyID, "oa2", payOut, timedelta(days=expiry), questionRange, optionRange)
     return status
 
 def retrieveForm(consumerID):
@@ -130,11 +130,11 @@ def serve_form_generate():
         data = request.form
         if not data:
             status = {'error': 'no form'}
-        if not 'form' in data or not 'surveyID' in data or not 'surveyFunds' in data or not 'payOut' in data or not 'expiry' in data or not 'optionRange' in data:
+        if not 'form' in data or not 'surveyID' in data or not 'surveyFunds' in data or not 'payOut' in data or not 'expiry' in data or not 'optionRange' in data or not 'questionRange' in data:
             status = {'error': 'data missing in form'}
         else:
             status = []
-            ret = publishSurvey(data['form'], data['surveyID'], data['payOut'], int(data['expiry']), int(data['optionRange']))
+            ret = publishSurvey(data['form'], data['surveyID'], data['payOut'], int(data['expiry']), ['question'+str(x) for x in range(1,int(data['questionRange'])+1)], int(data['optionRange']))
             if ret==False:
                 status = {'error': 'surveyID already taken'}
             else:
