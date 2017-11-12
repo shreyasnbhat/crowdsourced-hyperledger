@@ -14,11 +14,13 @@
                 {% if authenticated %}
                     <div class="card-panel green darken-1 block-style">
                         <h5 class="white-text center form-header">Organization Server sent a message!</h5>
+                        <h4 class="white-text center"><strong>{{ surveyID }}</strong></h4>
                         <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
                     </div>
                 {% else %}
                     <div class="card-panel red darken-1 block-style">
                         <h5 class="white-text center form-header">Organization Server sent a message!</h5>
+                        <h4 class="white-text center"><strong>{{ surveyID }}</strong></h4>
                         <h4 class="white-text center"><strong>{{ randomMessage }}</strong></h4>
                         <p class="white-text center">Unauthenticated</p>
                     </div>

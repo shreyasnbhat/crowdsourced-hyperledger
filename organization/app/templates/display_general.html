@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+<head>
+    {% block head %}
+        {{ super() }}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="row card-panel white-text deep-purple darken-1">
+        <form method="POST" action="{{ url_for('serve_display_general') }}">
+            <label for="arg"><h4><center>Type of participant, asset or transaction:</h4></center></label>
+            <input type="text" name="arg">
+            <center><input type="submit" class="btn waves-effect pink" value="Display"></center>
+        </form>
+    </div>
+    {% for item in display %}
+        <div class="row card-panel pink lighten-2 white-text">
+            {{ item }}
+        </div>
+    {% endfor %}
+{% endblock %}
+</body>
+</html>
+
+</body>
+</html>

@@ -9,21 +9,27 @@
 </head>
 <body>
 {% block body %}
-    <div class="row card-panel white deep-purple darken-1">
+    <div class="row card-panel white-text deep-purple darken-1">
         <div>
             <form method="POST" action="{{ url_for('serve_form_generate') }}" class="white-text">
                 <h5 class="white-text">Form</h5>
                 <textarea class="materialize-textarea deep-purple lighten-2" name="form" rows="10"
                           cols="30">{{ form }}</textarea>
                 <div class="row">
-                    <h5 class="white-text col s2 offset-s1 center">Survey ID</h5>
-                    <h5 class="white-text col s3 center">Pay Out</h5>
-                    <h5 class="white-text col s3 center">Survey Funds</h5>
-                    <h5 class="white-text col s3 center">Expiry (in days)</h5>
-                    <input name="surveyID" value="surveyID-ABCDE" class="col s2 offset-s1 center">
-                    <input name="payOut" value="10" class="col s1 offset-s1 center">
-                    <input name="surveyFunds" value="3000" class="col s1 offset-s2 center">
-                    <input name="expiry" value="1" class="col s1 offset-s2 center">
+                    <label for="surveyID"><h5 class="white-text col center">Survey ID</h5></label>
+                    <input name="surveyID" value="surveyID-ABCDE" class="col center">
+
+                    <label for="payOut"><h5 class="white-text col center">Pay Out</h5></label>
+                    <input name="payOut" value="10" class="col center">
+
+                    <label for="surveyFunds"><h5 class="white-text col center">Survey Funds</h5></label>
+                    <input name="surveyFunds" value="3000" class="col center">
+
+                    <label for="expiry"><h5 class="white-text col center">Expiry (in days)</h5></label>
+                    <input name="expiry" value="1" class="col center">
+
+                    <label for="optionRange"><h5 class="white-text col center">Option Range</h5></label>
+                    <input name="optionRange" value="1" class="col center">
                 </div>
                 <center><input type="submit" class="btn waves-effect pink" value="Generate Form"></center>
             </form>

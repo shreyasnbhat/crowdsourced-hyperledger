@@ -32,11 +32,14 @@ def sendHash():
         session['request-ip'] = request_ip
 
         url = "http://" + request_ip + ":" + ORGANIZATION_PORT + "/form"
-        randomMessage = requests.get(url).json()['randomMessage']
+        data = requests.get(url).json()
+        randomMessage = data['randomMessage']
+        surveyID = data['surveyID']
         encryptedRandomMessage = encrypt(randomMessage)
 
         return render_template('sendHash.html',
                                randomMessage=randomMessage,
+                               surveyID=surveyID,
                                encryptedRandomMessage=encryptedRandomMessage)
     else:
         return render_template('sendHash.html',

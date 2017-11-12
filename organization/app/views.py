@@ -9,21 +9,22 @@ organizationID = "o2"
 organizationAccountID = "oa2"
 currentRandomMessages = []
 pubKeyList = ['pubkey']
-pubKeyClaimedToken = []
+pubKeyClaimedToken = {}
 formDB = {}
 surveyID = 'surveyID-ABCDE'
+surveyID_DB = []
 form = {
     'question-1': {
         'question': 'Kya aapke masudo me dard hai?',
-        'allowedAnswers': {'option1': 'Haan', 'option2': 'Na'}
+        'allowedAnswers': {'1': 'Haan', '2': 'Na'}
     },
     'question-2': {
         'question': 'Kya aapke toothpaste me namak hai?',
-        'allowedAnswers': {'option1': 'Haan', 'option2': 'Na'}
+        'allowedAnswers': {'1': 'Haan', '2': 'Na'}
     },
     'question-3': {
         'question': 'Kya aap chutiye ho?',
-        'allowedAnswers': {'option1': 'Haan', 'option2': 'Na'}
+        'allowedAnswers': {'1': 'Haan', '2': 'Na'}
     }
 }
 
@@ -51,10 +52,12 @@ def checkRandomMessage(encryptedRandomMessage, pubKey):
         return False
     randomMessage = decrypt(encryptedRandomMessage, pubKey)
     # TODO: Use next line for prod
-    # if isValidRandomMessage(randomMessage) and not pubKey in pubKeyClaimedToken:
+    # if isValidRandomMessage(randomMessage) and not pubKey in pubKeyClaimedToken[surveyID]:
     if isValidRandomMessage(randomMessage):
         currentRandomMessages.remove(randomMessage)
-        pubKeyClaimedToken.append(pubKey)
+        if not surveyID in pubKeyClaimedToken:
+            pubKeyClaimedToken[surveyID] = []
+        pubKeyClaimedToken[surveyID].append(pubKey)
         return True
     return False
 
@@ -69,11 +72,15 @@ def publishAssignSurveyToken(surveyToken, surveyID, consumerID):
     status = postAssignSurveyToken(surveyToken, surveyID, consumerID)
 
 
-def publishSurvey(inputForm, inputSurveyID, payOut, expiry):
+def publishSurvey(inputForm, inputSurveyID, payOut, expiry, optionRange):
     form = inputForm
     global surveyID
+    global surveyID_DB
+    if inputSurveyID in surveyID_DB:
+        return False
     surveyID = inputSurveyID
-    status = postSurvey(surveyID, "oa2", payOut, timedelta(days=expiry))
+    surveyID_DB.append(surveyID)
+    status = postSurvey(surveyID, "oa2", payOut, timedelta(days=expiry), optionRange)
     return status
 
 def retrieveForm(consumerID):
@@ -102,7 +109,7 @@ def get_test():
 @app.route('/form', methods=['GET', 'POST'])
 def serve_form():
     if request.method == 'GET':
-        data = {'randomMessage': generateRandomMessage()}
+        data = {'randomMessage': generateRandomMessage(), 'surveyID': surveyID}
         return jsonify(data)
     else:
         data = request.json
@@ -123,13 +130,17 @@ def serve_form_generate():
         data = request.form
         if not data:
             status = {'error': 'no form'}
-        if not 'form' in data or not 'surveyID' in data or not 'surveyFunds' in data or not 'payOut' in data or not 'expiry' in data:
+        if not 'form' in data or not 'surveyID' in data or not 'surveyFunds' in data or not 'payOut' in data or not 'expiry' in data or not 'optionRange' in data:
             status = {'error': 'data missing in form'}
         else:
             status = []
-            status.append(publishSurvey(data['form'], data['surveyID'], data['payOut'], int(data['expiry'])))
-            status.append(postPublishSurvey(data['surveyID'], data['surveyFunds'], organizationAccountID))
-            status.append(getSurvey(data['surveyID']))
+            ret = publishSurvey(data['form'], data['surveyID'], data['payOut'], int(data['expiry']), int(data['optionRange']))
+            if ret==False:
+                status = {'error': 'surveyID already taken'}
+            else:
+                status.append(ret)
+                status.append(postPublishSurvey(data['surveyID'], data['surveyFunds'], organizationAccountID))
+                status.append(getSurvey(data['surveyID']))
         return render_template('display.html', display=status)
 
 
@@ -141,7 +152,7 @@ def serve_form_delete():
 
 @app.route('/form/status')
 def serve_form_status():
-    return render_template('display.html', display={'surveyID': surveyID})
+    return render_template('display.html', display={'surveyID': surveyID, 'surveyID_DB': surveyID_DB})
 
 
 @app.route('/display/survey')
@@ -154,8 +165,20 @@ def serve_display_status():
     display = []
     display.append(getOrganization("o2"))
     display.append(getOrganizationAccount("oa2"))
-    display.append(getSurvey(surveyID))
+    display.append({'surveyID': surveyID})
+    display.append({'surveyID_DB': surveyID_DB})
+    for sid in surveyID_DB:
+        display.append(getSurvey(sid))
     return render_template('display_blocks.html', display=display)
+
+
+@app.route('/display/general', methods=['GET', 'POST'])
+def serve_display_general():
+    if request.method=='GET':
+        return render_template('display_general.html', display=getGeneral())
+    else:
+        # return render_template('display.html', display=request.form)
+        return render_template('display_general.html', display=getGeneral(request.form['arg']))
 
 
 @app.route('/display/assignSurveyToken')

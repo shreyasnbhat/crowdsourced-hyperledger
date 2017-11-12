@@ -12,6 +12,12 @@ def getTimestamp():
     return str(datetime.today().isoformat())
 
 
+def getGeneral(arg='/system/historian'):
+    response = requests.get(url + arg+ '/', headers=headers).json()
+    print(response)
+    return response
+
+
 def postConsumer(id):
     data = {
         "$class": "org.acme.survey.Consumer",
@@ -108,13 +114,14 @@ def deleteOrganizationAccount(id):
     return response
 
 
-def postSurvey(id, organizationAccountID, payOut, expiryTimeDelta):
+def postSurvey(id, organizationAccountID, payOut, expiryTimeDelta, optionRange):
     data = {
         "$class": "org.acme.survey.Survey",
         "surveyID": id,
         "expiryTime": str((datetime.now() + expiryTimeDelta).isoformat()),
         "payOut": payOut,
         "tokens": 0,
+        "optionRange": int(optionRange),
         "organizationAccount": organizationAccountID
     }
     response = requests.post(url + 'Survey', json=data, headers=headers).json()
