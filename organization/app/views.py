@@ -73,9 +73,10 @@ def publishAssignSurveyToken(surveyToken, surveyID, consumerID):
 
 
 def publishSurvey(inputForm, inputSurveyID, payOut, expiry, questionRange, optionRange):
-    form = inputForm
+    global form
     global surveyID
     global surveyID_DB
+    form = inputForm
     if inputSurveyID in surveyID_DB:
         return False
     surveyID = inputSurveyID
