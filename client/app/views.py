@@ -35,6 +35,8 @@ def sendHash():
         data = requests.get(url).json()
         randomMessage = data['randomMessage']
         surveyID = data['surveyID']
+        if(surveyID is None or surveyID==''):
+            return render_template('display.html', display={'error': 'surveyID is None or surveyID==""'})
         encryptedRandomMessage = encrypt(randomMessage)
 
         return render_template('sendHash.html',
