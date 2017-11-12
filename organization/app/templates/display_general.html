@@ -28,12 +28,15 @@
     </div>
     {% for item in display %}
         <div class="row card-panel pink lighten-2 white-text">
-            {{ item }}
+            {% for key in item %}
+            <div>
+                <div class="col s4 form-header">{{ key }}</div>
+                <div class="col s8">{{ item[key] }}</div>
+            </div>
+            {% endfor %}
         </div>
     {% endfor %}
 {% endblock %}
 </body>
 </html>
 
-</body>
-</html>

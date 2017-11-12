@@ -13,26 +13,48 @@
         <div>
             <form method="POST" action="{{ url_for('serve_form_generate') }}" class="white-text">
                 <h5 class="white-text">Form</h5>
-                <textarea class="materialize-textarea deep-purple lighten-2" name="form" rows="10"
+                <div class="input-field col s12">
+                <textarea class="materialize-textarea deep-purple lighten-2" id="myTextArea" name="form" rows="30"
                           cols="30">{{ form }}</textarea>
+                </div>
+                <h5 class="block-style form-header">JSON Logs</h5>
+                <div id="prettyRes" class="row block-style"></div>
                 <div class="row">
-                    <label for="surveyID"><h5 class="white-text col center">Survey ID</h5></label>
-                    <input name="surveyID" value="surveyID-ABCDE" class="col center">
+                    <a class="waves-effect waves-light btn col s2 offset-s10 pink" onclick="prettyPrint()">Pretty Print</a>
+                </div>
+                <script>
+                    function prettyPrint() {
+                        var ugly = document.getElementById('myTextArea').value;
+                        var obj_ini = ugly.replace(/'/g, '"');
+                        try {
+                            var obj = JSON.parse(obj_ini);
+                            var pretty = JSON.stringify(obj, undefined, 4);
+                            document.getElementById('prettyRes').innerHTML = pretty;
+                        } catch (err) {
+                            document.getElementById('prettyRes').innerHTML = "Error in JSON Formatting";
+                        }
+                    }
+                </script>
+                <div class="row">
+                    <label for="surveyID"><h5 class="white-text col s2 offset-s1">Survey ID</h5></label>
+                    <input name="surveyID" value="surveyID-ABCDE" class="col s2">
 
-                    <label for="payOut"><h5 class="white-text col center">Pay Out</h5></label>
-                    <input name="payOut" value="10" class="col center">
+                    <label for="payOut"><h5 class="white-text col s2 offset-s1">Pay Out</h5></label>
+                    <input name="payOut" value="10" class="col s2">
+                </div>
+                <div class="row">
+                    <label for="surveyFunds"><h5 class="white-text col s2 offset-s1">Survey Funds</h5></label>
+                    <input name="surveyFunds" value="3000" class="col s2">
 
-                    <label for="surveyFunds"><h5 class="white-text col center">Survey Funds</h5></label>
-                    <input name="surveyFunds" value="3000" class="col center">
+                    <label for="expiry"><h5 class="white-text col s2 offset-s1">Expiry (in days)</h5></label>
+                    <input name="expiry" value="1" class="col s2">
+                </div>
+                <div class="row">
+                    <label for="questionRange"><h5 class="white-text col s2 offset-s1">Question Range</h5></label>
+                    <input name="questionRange" value="1" class="col s2">
 
-                    <label for="expiry"><h5 class="white-text col center">Expiry (in days)</h5></label>
-                    <input name="expiry" value="1" class="col center">
-
-                    <label for="questionRange"><h5 class="white-text col center">Question Range</h5></label>
-                    <input name="questionRange" value="1" class="col center">
-
-                    <label for="optionRange"><h5 class="white-text col center">Option Range</h5></label>
-                    <input name="optionRange" value="1" class="col center">
+                    <label for="optionRange"><h5 class="white-text col s2 offset-s1">Option Range</h5></label>
+                    <input name="optionRange" value="1" class="col s2">
                 </div>
                 <center><input type="submit" class="btn waves-effect pink" value="Generate Form"></center>
             </form>
