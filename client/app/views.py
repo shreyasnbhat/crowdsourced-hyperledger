@@ -116,3 +116,9 @@ def serve_display_status():
     display.append(getConsumer("c2"))
     display.append(getConsumerAccount("ca2"))
     return render_template('display_blocks.html', display=display)
+
+
+@app.route('/surveys')
+def serve_surveys():
+    display = getGeneral('Survey')
+    return render_template('display_blocks.html', display=display)

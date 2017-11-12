@@ -3,6 +3,7 @@ from random import shuffle, choice
 from string import ascii_uppercase
 from rest.api import *
 from organization.app import *
+import json
 from datetime import timedelta
 
 organizationID = "o2"
@@ -81,11 +82,12 @@ def publishSurvey(inputForm, inputSurveyID, payOut, expiry, questionRange, optio
         return False
     surveyID = inputSurveyID
     surveyID_DB.append(surveyID)
-    status = postSurvey(surveyID, "oa2", payOut, timedelta(days=expiry), questionRange, optionRange)
+    status = postSurvey(surveyID, form, "localhost", "oa2", payOut, timedelta(days=expiry), questionRange, optionRange)
     return status
 
 def generateFormForConsumer(consumerID):
     print("generateFormForConsumer()")
+    print(form)
     questions = list(form.keys())
     shuffle(questions)
     mapping = dict(zip(form.keys(), questions))
@@ -146,7 +148,11 @@ def serve_form_generate():
             status = {'error': 'data missing in form'}
         else:
             status = []
-            ret = publishSurvey(data['form'], data['surveyID'], data['payOut'], int(data['expiry']), ['question'+str(x) for x in range(1,int(data['questionRange'])+1)], int(data['optionRange']))
+            try:
+                formJson = json.loads(data['form'].replace("'",'"'))
+            except:
+                return render_template('display.html', display={'error': "error in json.loads(data['form'])"})
+            ret = publishSurvey(formJson, data['surveyID'], data['payOut'], int(data['expiry']), ['question'+str(x) for x in range(1,int(data['questionRange'])+1)], int(data['optionRange']))
             if ret==False:
                 status = {'error': 'surveyID already taken'}
             else:
