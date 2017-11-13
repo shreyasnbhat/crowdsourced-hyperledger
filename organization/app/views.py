@@ -17,16 +17,16 @@ surveyID = ''
 surveyID_DB = []
 form = {
     'question1': {
-        'question': 'Kya aapke masudo me dard hai?',
-        'allowedAnswers': {'1': 'Haan', '2': 'Na'}
+        'question': 'How much would you pay to watch an episode of Game of Thrones?',
+        'allowedAnswers': {'1': '50', '2': '25', '3': 'Nothing'}
     },
     'question2': {
-        'question': 'Kya aapke toothpaste me namak hai?',
-        'allowedAnswers': {'1': 'Haan', '2': 'Na'}
+        'question': 'Which other show will you pay to watch?',
+        'allowedAnswers': {'1': 'Suits', '2': 'Breaking Bad', '3': 'Silicon Valley'}
     },
     'question3': {
-        'question': 'Kya aap chutiye ho?',
-        'allowedAnswers': {'1': 'Haan', '2': 'Na'}
+        'question': 'How often do you download episodes from torrents?',
+        'allowedAnswers': {'1': 'Never', '2': 'A few times a month', '3': 'Every week'}
     }
 }
 

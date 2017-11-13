@@ -1,0 +1,61 @@
+/**
+ * New model file
+ */
+
+namespace org.acme.survey
+
+participant Consumer identified by aadharID {
+	o String aadharID
+    o String name
+    o String email
+}
+
+participant Organization identified by organizationID {
+	o String organizationID
+    o String name
+    o String email
+}
+
+asset ConsumerAccount identified by consumerAccountID {
+	o String consumerAccountID
+    o Integer tokens
+    --> Consumer consumer
+}
+
+asset OrganizationAccount identified by organizationAccountID {
+    o String organizationAccountID
+    o Integer tokens
+    --> Organization organization
+}
+
+asset Survey identified by surveyID {
+	o String surveyID
+	o String form
+	o String website
+    o DateTime expiryTime
+    o Integer payOut
+    o Integer tokens
+	o String[] questionRange
+	o Integer optionRange
+    --> OrganizationAccount organizationAccount
+}
+
+transaction PublishSurvey {
+    o Integer surveyFunds
+    --> Survey survey
+    --> OrganizationAccount organizationAccount
+}
+
+asset AssignSurveyToken identified by surveyToken {
+    o String surveyToken
+    o Boolean claimed
+    --> Survey survey
+    --> Consumer consumer
+}
+
+transaction SubmitSurvey {
+	o String filledForm
+    o String surveyToken
+    --> ConsumerAccount consumerAccount
+    --> AssignSurveyToken assignSurveyToken
+}

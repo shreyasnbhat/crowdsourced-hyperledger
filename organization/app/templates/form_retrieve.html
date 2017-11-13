@@ -32,7 +32,9 @@
                 <div class="col s8">{{item['assignSurveyToken']['surveyToken']}}</div>
             </div>
             <div>
-                <h4>{{item['filledForm']}}</h4>
+                {% for question in item['filledForm'] %}
+                    <h4>{{question}}: {{item['filledForm'][question]}}</h4>
+                {% endfor %}
             </div>
         </div>
     {% endfor %}
