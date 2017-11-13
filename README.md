@@ -79,7 +79,7 @@ CrowdInfo provides an ingenious **zero-knowledge verification** method for valid
 
 ## Smart contract
 + The consumer fills the form, and submits it on the blockchain. The submission contains a `filledForm` field which looks like: `{"question1": "2", "question2": "2", "question3": "3"}`. Note that this does not make any sense unless one knows the mapping of original questions to the mapping of questions in the form with that survey ID.
-+ The smart contract uses the value in `Survey` assets `optionRange` to check if the options are in the valid range.
++ The smart contract uses the value in `Survey` assets `optionRange` to check if the options are in the valid range. This is the **zero-knowledge verifcation** part. The actual answers are not disclosed, but the validity can be determined.
 + If valid, the Pay Out is credited to the `ConsumerAccount` from the `Surveys`'s `surveyFunds`.
 + The consumer can verify that tokens have been transferred by checking his `ConsumerAccount` by clicking on `Display Status`
 
