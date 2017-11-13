@@ -79,15 +79,29 @@ def publishSurvey(inputForm, inputSurveyID, payOut, expiry, questionRange, optio
     global formDB
     global surveyID
     global surveyID_DB
+    form_bak = form.copy()
+    formDB_bak = formDB.copy()
+    surveyID_bak = surveyID
+    surveyID_DB_bak = surveyID_DB.copy()
     form = inputForm
+    print('#######################################\nForm:')
+    print(form)
+    print('#######################################')
     if inputSurveyID in surveyID_DB:
         return False
     surveyID = inputSurveyID
     surveyID_DB.append(surveyID)
     if surveyID not in formDB and surveyID!='':
         formDB[surveyID] = form
-    status = postSurvey(surveyID, form, "localhost", "oa2", payOut, timedelta(days=expiry), questionRange, optionRange)
+    status = postSurvey(surveyID, str(form), "localhost", "oa2", payOut, timedelta(days=expiry), questionRange, optionRange)
+    if not 'error' in status:
+        return status
+    form = form_bak
+    formDB = formDB_bak
+    surveyID = surveyID_bak
+    surveyID_DB = surveyID_DB_bak
     return status
+
 
 def generateFormForConsumer(consumerID):
     print("generateFormForConsumer()")
@@ -112,7 +126,7 @@ def generateFormForConsumer(consumerID):
 def retreiveSubmittedForm(surveyID):
     submitSurveys = getGeneral('SubmitSurvey')
     assignSurveyTokens = getGeneral('AssignSurveyToken')
-    temp_target = []
+    #temp_target = []
     target = []
     for submitSurvey in submitSurveys:
         for assignSurveyToken in assignSurveyTokens:
@@ -122,12 +136,12 @@ def retreiveSubmittedForm(surveyID):
                 mapping = formMappingDB[assignSurveyToken['surveyToken']]
                 for q in mapping:
                     submittedForm[q] = filledForm[mapping[q]]
-                temp_target.append((submitSurvey, assignSurveyToken, formMappingDB[assignSurveyToken['surveyToken']], formDB[surveyID], submittedForm))
+                #temp_target.append((submitSurvey, assignSurveyToken, formMappingDB[assignSurveyToken['surveyToken']], formDB[surveyID], submittedForm))
                 formValues = {}
                 form = formDB[surveyID]
                 for q in submittedForm:
                     formValues[form[q]['question']] = form[q]['allowedAnswers'][submittedForm[q]]
-                target.append(formValues)
+                target.append({'filledForm': formValues, 'surveyID': surveyID, 'assignSurveyToken': assignSurveyToken, 'submitSurvey': submitSurvey})
     return target
 
 
@@ -169,24 +183,13 @@ def serve_form_generate():
             except:
                 return render_template('display.html', display={'error': "error in json.loads(data['form'])"})
             ret = publishSurvey(formJson, data['surveyID'], data['payOut'], int(data['expiry']), ['question'+str(x) for x in range(1,int(data['questionRange'])+1)], int(data['optionRange']))
-            if ret==False:
-                status = {'error': 'surveyID already taken'}
+            if 'error' in ret:
+                status = [ret['error']['message'], {'help': 'Try using a unique surveyID'}]
             else:
                 status.append(ret)
                 status.append(postPublishSurvey(data['surveyID'], data['surveyFunds'], organizationAccountID))
                 status.append(getSurvey(data['surveyID']))
         return render_template('display.html', display=status)
-
-
-@app.route('/form/delete')
-def serve_form_delete():
-    status = deleteSurvey(surveyID)
-    return render_template('display.html', display=status)
-
-
-@app.route('/form/status')
-def serve_form_status():
-    return render_template('display.html', display={'surveyID': surveyID, 'surveyID_DB': surveyID_DB})
 
 
 @app.route('/form/retrieve', methods=['GET', 'POST'])

@@ -20,9 +20,10 @@
         <ul id="nav-mobile" class="right">
             {% block navItems %}
                 <li><a href="{{ url_for('serve_form_generate') }}">Generate</a></li>
-                <li><a href="{{ url_for('serve_form_delete') }}">Delete</a></li>
-                <li><a href="{{ url_for('serve_form_status') }}">Form Status</a></li>
+                <li><a href="{{ url_for('serve_form_retrieve') }}">Form Retrieve</a></li>
+                <li><a href="{{ url_for('serve_display_survey') }}">Display Survey</a></li>
                 <li><a href="{{ url_for('serve_display_status') }}">Display Status</a></li>
+                <li><a href="{{ url_for('serve_display_assignSurveyToken') }}">Assigned Survey Tokens</a></li>
                 <li><a href="{{ url_for('serve_display_general') }}">Display General</a></li>
             {% endblock %}
         </ul>

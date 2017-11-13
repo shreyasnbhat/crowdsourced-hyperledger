@@ -20,13 +20,13 @@
                     <input value="{{ clientTokens[token]['surveyToken'] }}" type="hidden" name="surveyToken">
                     <h5 class="white-text form-header col s8">{{ clientTokens[token]['surveyToken'] }}</h5>
                     <h5 class="col s4 white-text"><strong>Claim Status</strong></h5>
-                    {% if claimed[token] %}
+                    {% if claimed[clientTokens[token]['surveyToken']] %}
                         <h5 class="white-text col s8">Token claimed</h5>
                     {% else %}
                         <h5 class="white-text col s8">Token Valid</h5>
+                        <input type="submit" class="waves-effect waves-light btn  green darken-4"
+                        value="Use Token">
                     {% endif %}
-                    <input type="submit" class="waves-effect waves-light btn  green darken-4"
-                           value="Use Token">
 
                 </div>
             </form>

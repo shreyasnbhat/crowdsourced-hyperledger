@@ -23,7 +23,17 @@
     </div>
     {% for item in display %}
         <div class="row card-panel pink lighten-2 white-text">
-            {{ item }}
+            <div class="row block-style deep-purple darken-1">
+                <div class="col s4 form-header">Survey ID:</div>
+                <div class="col s8">{{item['surveyID']}}</div>
+                <div class="col s4 form-header">Consumer: </div>
+                <div class="col s8">{{item['assignSurveyToken']['consumer']}}</div>
+                <div class="col s4 form-header">Survey Token: </div>
+                <div class="col s8">{{item['assignSurveyToken']['surveyToken']}}</div>
+            </div>
+            <div>
+                <h4>{{item['filledForm']}}</h4>
+            </div>
         </div>
     {% endfor %}
 {% endblock %}
