@@ -9,23 +9,22 @@
 <body>
 {% block body %}
     {% for survey in display %}
-        <div class="pink lighten-3 white-text">
-            <div class="pink">
-                <h3 class="block-style">{{ survey['surveyID'] }}</h3>
-            </div>
-            <div class="row">
+        <div class="pink lighten-2 white-text">
+        <div class="deep-purple darken-1">
+            <h3 class="block-style">{{ survey['surveyID'] }}</h3>
+        </div>
+        <div class="row block-style">
+            <div class="white-text">
                 {% for key in survey %}
-                <div class="row">
-                    <div class="col s2 offset-s2 pink lighten-2">{{ key }}</div>
-                    <div class="col s4 pink lighten-2">{{ survey[key] }}</div>
-                </div>
+                    <div>
+                        <div class="col s4 form-header">{{ key }}</div>
+                        <div class="col s8">{{ survey[key] }}</div>
+                    </div>
                 {% endfor %}
             </div>
         </div>
+        </div>
     {% endfor %}
 {% endblock %}
-</body>
-</html>
-
 </body>
 </html>

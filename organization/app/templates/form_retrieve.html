@@ -33,14 +33,12 @@
             </div>
             <div>
                 {% for question in item['filledForm'] %}
-                    <h4>{{question}}: {{item['filledForm'][question]}}</h4>
+                    <h5 class="form-header">{{question}}</h5>
+                    <h6 class="question-font">{{item['filledForm'][question]}}</h6>
                 {% endfor %}
             </div>
         </div>
     {% endfor %}
 {% endblock %}
-</body>
-</html>
-
 </body>
 </html>

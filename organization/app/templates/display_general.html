@@ -10,7 +10,11 @@
 {% block body %}
     <div class="row card-panel white-text deep-purple darken-1">
         <form method="POST" action="{{ url_for('serve_display_general') }}">
-            <label for="arg"><h4><center>Type of participant, asset or transaction:</h4></center></label>
+            <label for="arg">
+                <h4>
+                    <center>Type of participant, asset or transaction:</center>
+                </h4>
+                </label>
             <select class="browser-default deep-purple darken-1 white-text" name="arg">
                 <option value="" disabled selected>Select participant, asset or transaction</option>
                 <option value="Consumer">Consumer</option>
@@ -29,10 +33,10 @@
     {% for item in display %}
         <div class="row card-panel pink lighten-2 white-text">
             {% for key in item %}
-            <div>
-                <div class="col s4 form-header">{{ key }}</div>
-                <div class="col s8">{{ item[key] }}</div>
-            </div>
+                <div>
+                    <div class="col s4 form-header">{{ key }}</div>
+                    <div class="col s8">{{ item[key] }}</div>
+                </div>
             {% endfor %}
         </div>
     {% endfor %}

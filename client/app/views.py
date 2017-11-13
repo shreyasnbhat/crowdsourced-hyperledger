@@ -24,7 +24,7 @@ def requestForm():
     if request.method == 'GET':
         return render_template('request.html')
     else:
-        return render_template('request.html',request_ip = request.form['request_ip'])
+        return render_template('request.html',request_ip=request.form['request_ip'])
 
 
 @app.route('/sendHash', methods=['GET', 'POST'])
