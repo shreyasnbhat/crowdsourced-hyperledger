@@ -10,7 +10,6 @@
 {% block body %}
     {% for item in display %}
         <div class="row card-panel pink lighten-2 white-text">
-            <div>
                 <center><h3 class="block-style deep-purple">Survey ID: {{ item['surveyID'] }}</h3>
                     <div class="block-style pink lighten-1">
                         <center><h4>Form</h4></center>
@@ -20,13 +19,11 @@
                         <center><h4>Pay Out</h4></center>
                         <h4>{{ item['payOut'] }}</h4>
                     </div>
-            </div>
-        </div>
-        <form action="{{ url_for('requestForm') }}" method="POST">
-            <input type="hidden" name="request_ip" value="{{ item['website'] }}">
-            <center><input type="submit" class="waves-effect btn waves-light darken-4"
-                           value="Get Form"></center>
-        </form>
+                    <form action="{{ url_for('requestForm') }}" method="POST">
+                        <input type="hidden" name="request_ip" value="{{ item['website'] }}">
+                        <center><input type="submit" class="waves-effect btn waves-light darken-4"
+                            value="Get Form"></center>
+                    </form>
         </div>
     {% endfor %}
 {% endblock %}

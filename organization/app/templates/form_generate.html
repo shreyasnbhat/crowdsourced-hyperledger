@@ -13,6 +13,7 @@
         <div>
             <form method="POST" action="{{ url_for('serve_form_generate') }}" class="white-text">
                 <h5 class="block-style form-header">Form</h5>
+                <h5 class="block-style form-header">All questions must have equal number of options</h5>
                 <textarea class="border block-style pink lighten-2 medium-font" id="myTextArea" name="form" rows="30"
                           cols="30">{{ form }}</textarea>
                 <br>
@@ -38,7 +39,7 @@
                 </script>
                 <div class="row">
                     <label for="surveyID"><h5 class="white-text col s2 offset-s1">Survey ID</h5></label>
-                    <input name="surveyID" value="surveyID-ABCDE" class="col s2">
+                    <input name="surveyID" value="TV-Show-1" class="col s2">
 
                     <label for="payOut"><h5 class="white-text col s2 offset-s1">Pay Out</h5></label>
                     <input name="payOut" value="10" class="col s2">
@@ -55,7 +56,7 @@
                     <input name="questionRange" value="3" class="col s2">
 
                     <label for="optionRange"><h5 class="white-text col s2 offset-s1">Option Range</h5></label>
-                    <input name="optionRange" value="2" class="col s2">
+                    <input name="optionRange" value="3" class="col s2">
                 </div>
                 <center><input type="submit" class="btn waves-effect pink" value="Generate Form"></center>
             </form>

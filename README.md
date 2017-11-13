@@ -28,6 +28,11 @@ A secure, incentivized and decentralized crowdsourcing solution for information 
         python3 client/run.py p
     ```
 
++ The organization webpage is available at `http://localhost:9899/`
+
++ The client webpage is available at `http://localhost:9898/`
+
+
 # Problem Statement
 #### As a information seeker, do you want to:  
 - Harness the power of minds of an entire population to make better business decisions?  
@@ -61,7 +66,23 @@ CrowdInfo provides an ingenious **zero-knowledge verification** method for valid
 + Transactions: ```PublishSurvey```, ```SubmitSurvey```
 ## Off-chain component
 + The off-chain component provides a framework that ensures a single form being issued to a single information provider. It also builds upon the confidentiality guarantee of data.
-+ A Certificate Authority that ascertains the validity of identity of a user is assumed.
++ When a consumer requests the organization server for a survey form, the consumer is provided a random string which is to be signed using it's private key. The public key must be registered with a Certificate Authority.
++ Upon recieving the signed string, the organization server decrypts the hashed message using the consumer's public key, after verifying the public key with the CA.
+    + If a consumer requests a form with the same public key twice, the request is rejected. This ensures that a single consumer fills a form only once.
++ The consumer is provided:
+    + A unique SurveyToken
+    + A form which has the questions randomly shuffled. Example: `question1` in the original form will map to `question3` in the provided form, and so on.
+    + The organization server stores this mapping against the SurveyToken with itself
+
+## Smart contract
++ The consumer fills the form, and submits it on the blockchain. The submission contains a `filledForm` field which looks like: `{"question1": "2", "question2": "2", "question3": "3"}`. Note that this does not make any sense unless one knows the mapping of original questions to the mapping of questions in the form with that survey ID.
++ The smart contract uses the value in `Survey` assets `optionRange` to check if the options are in the valid range.
++ If valid, the Pay Out is credited to the `ConsumerAccount` from the `Surveys`'s `surveyFunds`.
++ The consumer can verify that tokens have been transferred by checking his `ConsumerAccount` by clicking on `Display Status`
+
+## Viewing answered Surveys
++ Click on `Form Retrieve` button in the organization app.
++ The organization picks up the `filledForm` from the `SubmitSurvey` and reverse maps the questions to the original questions. It can then view the form as filled by the consumer.
 
 
 # Defining a survey form

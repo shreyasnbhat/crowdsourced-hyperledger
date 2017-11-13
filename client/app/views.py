@@ -19,6 +19,7 @@ def serve_test():
     return str(getTimestamp())
 
 
+@app.route('/', methods=['GET','POST'])
 @app.route('/requestForm', methods=['GET','POST'])
 def requestForm():
     if request.method == 'GET':
@@ -38,7 +39,7 @@ def sendHash():
         randomMessage = data['randomMessage']
         surveyID = data['surveyID']
         if(surveyID is None or surveyID==''):
-            return render_template('display.html', display={'error': 'surveyID is None or surveyID==""'})
+            return render_template('display.html', display={'error': 'surveyID is None or surveyID=="". Has the organization generated a form yet?'})
         encryptedRandomMessage = encrypt(randomMessage)
 
         return render_template('sendHash.html',

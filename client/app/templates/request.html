@@ -13,10 +13,11 @@
             <form action="{{ url_for('sendHash') }}" method="POST">
                 <div class="row block-style">
                     <div class="input-field col s12">
+                        <p>Enter localhost for demo</p>
                         {% if request_ip %}
-                        <input id="ip" type="text" class="validate" name="request-ip" value="localhost">
-                        {% else %}
                         <input id="ip" type="text" class="validate" name="request-ip" value={{ request_ip }}>
+                        {% else %}
+                        <input id="ip" type="text" class="validate" name="request-ip" value="localhost">
                         {% endif %}
                         <label for="ip" class="active">Organization IP</label>
                     </div>

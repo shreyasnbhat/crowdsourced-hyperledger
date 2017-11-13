@@ -53,9 +53,9 @@ def checkRandomMessage(encryptedRandomMessage, pubKey):
     if not isValidPubKey(pubKey):
         return False
     randomMessage = decrypt(encryptedRandomMessage, pubKey)
-    # TODO: Use next line for prod
-    # if isValidRandomMessage(randomMessage) and not pubKey in pubKeyClaimedToken[surveyID]:
-    if isValidRandomMessage(randomMessage):
+    if isValidRandomMessage(randomMessage) and (not surveyID in pubKeyClaimedToken or not pubKey in pubKeyClaimedToken[surveyID]):
+    # TODO: Use next line for debug
+    # if isValidRandomMessage(randomMessage):
         currentRandomMessages.remove(randomMessage)
         if not surveyID in pubKeyClaimedToken:
             pubKeyClaimedToken[surveyID] = []
@@ -166,6 +166,7 @@ def serve_form():
             return jsonify({'error': 'auth failed'})
 
 
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/form/generate', methods=['GET', 'POST'])
 def serve_form_generate():
     if request.method == 'GET':
@@ -189,7 +190,7 @@ def serve_form_generate():
                 status.append(ret)
                 status.append(postPublishSurvey(data['surveyID'], data['surveyFunds'], organizationAccountID))
                 status.append(getSurvey(data['surveyID']))
-        return render_template('display.html', display=status)
+        return render_template('display_blocks.html', display=status)
 
 
 @app.route('/form/retrieve', methods=['GET', 'POST'])
