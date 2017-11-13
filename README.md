@@ -29,8 +29,11 @@ A secure, incentivized and decentralized crowdsourcing solution for information 
     ```
 
 + The organization webpage is available at `http://localhost:9899/`
+    + Go to this page and generate a form
 
 + The client webpage is available at `http://localhost:9898/`
+    + Go to `http://localhost:9898/surveys` to view available surveys
+    + Follow the instructions from there
 
 
 # Problem Statement
